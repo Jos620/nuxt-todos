@@ -1,0 +1,19 @@
+name: Code Quality Assurance
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  quality_assurance:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm install -g pnpm && pnpm install
+      - name: Run Prettier
+        run: pnpm format
+      - name: Run ESLint
+        run: pnpm lint
