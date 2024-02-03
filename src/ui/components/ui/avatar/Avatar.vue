@@ -3,7 +3,7 @@ import type { VariantProps } from 'class-variance-authority';
 import { cva } from 'class-variance-authority';
 import { AvatarRoot } from 'radix-vue';
 
-import { cn } from '@/lib/utils';
+import { cn } from '~/ui/lib/utils';
 
 const avatarVariant = cva(
   'inline-flex items-center justify-center font-normal text-foreground select-none shrink-0 bg-secondary overflow-hidden',

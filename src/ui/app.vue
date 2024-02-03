@@ -11,4 +11,4 @@ import { SpeedInsights } from '@vercel/speed-insights/nuxt';
 </template>
 
 <style src="@unocss/reset/tailwind.css"></style>
-<style src="~/assets/styles/typography.scss" lang="scss"></style>
+<style src="~/ui/assets/styles/typography.scss" lang="scss"></style>

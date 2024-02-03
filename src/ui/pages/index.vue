@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import type { TestResponse } from '@/server/api/test';
-
-const { data } = useFetch<TestResponse>('/api/test');
-
 const isDark = useDark();
 
 const githubRepoLink = 'https://github.com/jos620/nuxt-template';
@@ -11,7 +7,7 @@ const githubRepoName = githubRepoLink.split('/').slice(-2).join('/');
 
 <template>
   <main h-svh center col="<sm:~" gap-2 relative>
-    <h1>{{ data?.title }}</h1>
+    <h1>Nuxt Template!</h1>
 
     <a class="sm:hidden" :href="githubRepoLink" target="_blank">
       <div i-mdi:github w-12 h-12></div>

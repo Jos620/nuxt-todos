@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Separator, type SeparatorProps } from 'radix-vue';
 
-import { cn } from '@/lib/utils';
+import { cn } from '~/ui/lib/utils';
 
 interface Props extends SeparatorProps {
   class?: string;

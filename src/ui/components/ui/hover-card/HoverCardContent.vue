@@ -6,7 +6,7 @@ import {
   useForwardProps,
 } from 'radix-vue';
 
-import { cn } from '@/lib/utils';
+import { cn } from '~/ui/lib/utils';
 
 const props = withDefaults(
   defineProps<HoverCardContentProps & { class?: string }>(),
