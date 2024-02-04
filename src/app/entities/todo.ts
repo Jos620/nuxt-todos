@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 
-interface TodoProps {
+export interface TodoProps {
   title: string;
   description?: string;
   completedAt?: Date;
