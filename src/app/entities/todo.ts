@@ -7,8 +7,8 @@ interface TodoProps {
 }
 
 export class Todo {
-  public readonly id: string;
-  private props: TodoProps;
+  readonly id: string;
+  props: TodoProps;
 
   constructor(props: TodoProps, id?: string) {
     this.props = props;
