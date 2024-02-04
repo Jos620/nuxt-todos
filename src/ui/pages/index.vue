@@ -16,7 +16,11 @@ const { data } = useFetch<TodosResponse>('/api/todos');
 
         <UiTableBody>
           <UiTableRow v-for="todo in data?.todos" :key="todo.id">
-            <UiTableCell>{{ todo.title }}</UiTableCell>
+            <UiTableCell>
+              <NuxtLink :to="`/todo/${todo.id}`">
+                {{ todo.title }}
+              </NuxtLink>
+            </UiTableCell>
           </UiTableRow>
         </UiTableBody>
       </UiTable>
