@@ -1,5 +1,5 @@
-import type { Todo } from '../entities/todo';
-import type { TodosRepository } from '../repositories/todo';
+import type { Todo } from '@/app/entities/todo';
+import type { TodosRepository } from '@/app/repositories/todo';
 
 export class DeleteTodoService {
   constructor(private db: TodosRepository) {}

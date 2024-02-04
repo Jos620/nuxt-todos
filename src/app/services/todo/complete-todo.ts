@@ -1,6 +1,6 @@
-import type { Todo } from '../entities/todo';
-import { TodoError } from '../errors/todo';
-import type { TodosRepository } from '../repositories/todo';
+import type { Todo } from '@/app/entities/todo';
+import { TodoError } from '@/app/errors/todo';
+import type { TodosRepository } from '@/app/repositories/todo';
 
 export class CompleteTodoService {
   constructor(private db: TodosRepository) {}

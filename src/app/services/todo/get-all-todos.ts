@@ -1,4 +1,4 @@
-import type { TodosRepository } from '../repositories/todo';
+import type { TodosRepository } from '@/app/repositories/todo';
 
 export class GetAllTodosService {
   constructor(private db: TodosRepository) {}
