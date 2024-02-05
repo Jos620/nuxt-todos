@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import type { TodosResponse } from '~/infra/http/api/todos/index.get';
 
-const { data } = useFetch<TodosResponse>('/api/todos');
+const app = useNuxtApp();
+
+const { data } = useFetch<TodosResponse>('/api/todos', {
+  key: 'todos',
+  getCachedData: (key) => app.payload.data[key],
+});
 </script>
 
 <template>

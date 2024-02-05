@@ -5,7 +5,7 @@ import { DrizzleDatabase } from '~/infra/database/drizzle';
 import { TodoHTTP, TodoViewModel } from '~/infra/http/view-models/todo';
 
 export interface TodoIdResponse {
-  todo: TodoHTTP;
+  todo?: TodoHTTP;
 }
 
 export default defineEventHandler<Promise<TodoIdResponse>>(async (event) => {
