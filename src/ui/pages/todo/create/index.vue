@@ -2,10 +2,14 @@
 import { toTypedSchema } from '@vee-validate/zod';
 import { Field, useForm } from 'vee-validate';
 
+import type { TodosResponse } from '@/infra/http/api/todos/index.get';
 import type { CreateTodoResponse } from '~/infra/http/api/todos/index.post';
 import { bodySchema } from '~/infra/http/validations/todos';
 
+const app = useNuxtApp();
 const router = useRouter();
+
+useNuxtData<TodosResponse>('todos');
 
 const form = useForm({
   validationSchema: toTypedSchema(bodySchema),
@@ -15,7 +19,12 @@ const onSubmit = form.handleSubmit(async (values) => {
   const { todo } = await $fetch<CreateTodoResponse>('/api/todos', {
     method: 'POST',
     body: values,
+    async onResponse() {
+      await refreshNuxtData('todos');
+      app.payload.data.todos = undefined;
+    },
   });
+  if (!todo) return;
 
   router.push(`/todo/${todo.id}`);
 });

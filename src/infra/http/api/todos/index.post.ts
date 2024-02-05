@@ -4,7 +4,7 @@ import { bodySchema } from '~/infra/http/validations/todos';
 import { type TodoHTTP, TodoViewModel } from '~/infra/http/view-models/todo';
 
 export interface CreateTodoResponse {
-  todo: TodoHTTP;
+  todo?: TodoHTTP;
 }
 
 export default defineEventHandler<Promise<CreateTodoResponse>>(
