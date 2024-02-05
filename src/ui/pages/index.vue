@@ -95,7 +95,7 @@ async function toggleTodo(id: Todo['id']) {
           </NuxtLink>
         </UiTableCell>
         <UiTableCell>
-          <p>{{ todo.description }}</p>
+          <p>{{ todo.description || '-' }}</p>
         </UiTableCell>
         <UiTableCell text-right>
           <UiButton
