@@ -26,17 +26,18 @@ const { data } = useLazyFetch<TodoIdResponse>(`/api/todos/${route.params.id}`, {
 async function deleteTodo() {
   await $fetch(`/api/todos/${route.params.id}`, {
     method: 'DELETE',
-    onResponse() {
+    async onResponse() {
       if (!cachedTodos.value) return;
 
       cachedTodos.value.todos = cachedTodos.value.todos.filter(
         (todo) => todo.id !== route.params.id,
       );
+
+      await refreshNuxtData('todos');
+      app.payload.data.todos = undefined;
     },
   });
 
-  await refreshNuxtData('todos');
-  app.payload.data.todos = undefined;
   await router.push('/');
 }
 </script>
