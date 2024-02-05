@@ -42,6 +42,12 @@ async function deleteTodo(id: Todo['id']) {
     </UiTableHeader>
 
     <UiTableBody>
+      <UiTableRow v-if="!data?.todos.length">
+        <UiTableCell :colspan="2">
+          <p text="muted center" py-20>No todos found.</p>
+        </UiTableCell>
+      </UiTableRow>
+
       <UiTableRow v-for="todo in data?.todos" :key="todo.id">
         <UiTableCell>
           <NuxtLink :to="`/todo/${todo.id}`">
