@@ -1,3 +1,3 @@
-import { apiTestMock } from '../../src/server/api/test/mock';
+import { apiTodosGet } from '../../src/infra/http/api/todos/mock';
 
-export default [apiTestMock];
+export default [apiTodosGet];

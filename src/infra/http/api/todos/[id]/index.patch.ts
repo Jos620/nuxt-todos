@@ -4,7 +4,7 @@ import { CompleteTodoService } from '~/app/services/todo/complete-todo';
 import { DrizzleDatabase } from '~/infra/database/drizzle';
 import { TodoHTTP, TodoViewModel } from '~/infra/http/view-models/todo';
 
-interface TodoIdPatchResponse {
+export interface TodoIdPatchResponse {
   todo?: TodoHTTP;
 }
 
