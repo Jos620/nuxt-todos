@@ -10,27 +10,23 @@ const { data } = useFetch<TodosResponse>('/api/todos', {
 </script>
 
 <template>
-  <main p="4 md:y-10 lg:y-20">
-    <div container mx-auto>
-      <UiTable>
-        <UiTableHeader>
-          <UiTableRow>
-            <UiTableHead>Title</UiTableHead>
-          </UiTableRow>
-        </UiTableHeader>
+  <UiTable>
+    <UiTableHeader>
+      <UiTableRow>
+        <UiTableHead>Title</UiTableHead>
+      </UiTableRow>
+    </UiTableHeader>
 
-        <UiTableBody>
-          <UiTableRow v-for="todo in data?.todos" :key="todo.id">
-            <UiTableCell>
-              <NuxtLink :to="`/todo/${todo.id}`">
-                <UiButton variant="link" class="px-0">
-                  {{ todo.title }}
-                </UiButton>
-              </NuxtLink>
-            </UiTableCell>
-          </UiTableRow>
-        </UiTableBody>
-      </UiTable>
-    </div>
-  </main>
+    <UiTableBody>
+      <UiTableRow v-for="todo in data?.todos" :key="todo.id">
+        <UiTableCell>
+          <NuxtLink :to="`/todo/${todo.id}`">
+            <UiButton variant="link" class="px-0">
+              {{ todo.title }}
+            </UiButton>
+          </NuxtLink>
+        </UiTableCell>
+      </UiTableRow>
+    </UiTableBody>
+  </UiTable>
 </template>
