@@ -76,6 +76,7 @@
     "@libsql/client": "^0.4.3",
     "@pinia/nuxt": "^0.5.1",
     "@unocss/reset": "^0.58.3",
+    "@vee-validate/zod": "^4.12.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "drizzle-orm": "^0.29.3",
@@ -83,6 +84,7 @@
     "pinia": "^2.1.7",
     "radix-vue": "^1.3.2",
     "tailwind-merge": "^2.2.1",
+    "vee-validate": "^4.12.5",
     "zod": "^3.22.4"
   }
 }

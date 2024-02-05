@@ -14,6 +14,9 @@ dependencies:
   '@unocss/reset':
     specifier: ^0.58.3
     version: 0.58.3
+  '@vee-validate/zod':
+    specifier: ^4.12.5
+    version: 4.12.5(vue@3.4.5)
   class-variance-authority:
     specifier: ^0.7.0
     version: 0.7.0
@@ -35,6 +38,9 @@ dependencies:
   tailwind-merge:
     specifier: ^2.2.1
     version: 2.2.1
+  vee-validate:
+    specifier: ^4.12.5
+    version: 4.12.5(vue@3.4.5)
   zod:
     specifier: ^3.22.4
     version: 3.22.4
@@ -2958,6 +2964,16 @@ packages:
     transitivePeerDependencies:
       - rollup
     dev: true
+
+  /@vee-validate/zod@4.12.5(vue@3.4.5):
+    resolution: {integrity: sha512-hUjvXaa4HHvlZeosucViIDOUikQmyKaXXuL6P8LR1ETOUrBV6ntTsafJGvRYtwhXosoLYuolUD6Km737okK4Gg==}
+    dependencies:
+      type-fest: 4.10.1
+      vee-validate: 4.12.5(vue@3.4.5)
+      zod: 3.22.4
+    transitivePeerDependencies:
+      - vue
+    dev: false
 
   /@vercel/analytics@1.1.2:
     resolution: {integrity: sha512-CodhkLCQ/EHzjX8k+Qg+OzTBY0UadykrcfolfSOJVZZY/ZJM5nbhztm9KdbYvMfqKlasAr1+OYy0ThZnDA/MYA==}
@@ -10149,7 +10165,6 @@ packages:
   /type-fest@4.10.1:
     resolution: {integrity: sha512-7ZnJYTp6uc04uYRISWtiX3DSKB/fxNQT0B5o1OUeCqiQiwF+JC9+rJiZIDrPrNCLLuTqyQmh4VdQqh/ZOkv9MQ==}
     engines: {node: '>=16'}
-    dev: true
 
   /type@1.2.0:
     resolution: {integrity: sha512-+5nt5AAniqsCnu2cEQQdpzCAh33kVx8n0VoFidKpB1dVVLAN/F+bgVOqOJqOnEnrhp222clB5p3vUlD+1QAnfg==}
@@ -10530,6 +10545,16 @@ packages:
     dependencies:
       builtins: 5.0.1
     dev: true
+
+  /vee-validate@4.12.5(vue@3.4.5):
+    resolution: {integrity: sha512-rvaDfLPSLwTk+mf016XWE4drB8yXzOsKXiKHTb9gNXNLTtQSZ0Ww26O0/xbIFQe+n3+u8Wv1Y8uO/aLDX4fxOg==}
+    peerDependencies:
+      vue: ^3.3.11
+    dependencies:
+      '@vue/devtools-api': 6.5.1
+      type-fest: 4.10.1
+      vue: 3.4.5(typescript@5.3.3)
+    dev: false
 
   /vite-node@1.1.3(@types/node@20.11.0)(sass@1.70.0):
     resolution: {integrity: sha512-BLSO72YAkIUuNrOx+8uznYICJfTEbvBAmWClY3hpath5+h1mbPS5OMn42lrTxXuyCazVyZoDkSRnju78GiVCqA==}
