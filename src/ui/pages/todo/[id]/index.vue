@@ -8,6 +8,7 @@ const route = useRoute();
 const router = useRouter();
 const app = useNuxtApp();
 
+const previousCachedTodos = ref<TodosResponse>();
 const { data: cachedTodos } = useNuxtData<TodosResponse>('todos');
 const defaultTodo = computed(() =>
   cachedTodos.value?.todos.find((todo) => todo.id === route.params.id),
@@ -40,6 +41,36 @@ async function deleteTodo() {
 
   await router.push('/');
 }
+
+async function toggleTodo() {
+  await $fetch(`/api/todos/${route.params.id}`, {
+    method: 'PATCH',
+    onRequest() {
+      if (cachedTodos.value) {
+        previousCachedTodos.value = { ...cachedTodos.value };
+      }
+
+      if (data.value.todo) {
+        data.value.todo.isCompleted = !data.value.todo.isCompleted;
+      }
+
+      const cachedTodo = cachedTodos.value?.todos.find(
+        (todo) => todo.id === route.params.id,
+      );
+      if (cachedTodo) {
+        cachedTodo.isCompleted = !cachedTodo.isCompleted;
+      }
+    },
+    onRequestError() {
+      if (!previousCachedTodos.value) return;
+      cachedTodos.value = previousCachedTodos.value;
+    },
+    async onResponse() {
+      await refreshNuxtData('todos');
+      app.payload.data.todos = undefined;
+    },
+  });
+}
 </script>
 
 <template>
@@ -49,7 +80,14 @@ async function deleteTodo() {
         <div i-mdi:chevron-left text="2xl muted hover:primary" />
       </NuxtLink>
 
-      <h2 pb-0>{{ data?.todo?.title }}</h2>
+      <UiCheckbox :checked="data.todo?.isCompleted" mr-2 @click="toggleTodo" />
+
+      <h2
+        pb-0
+        :class="{ 'line-through text-3xl text-muted': data.todo?.isCompleted }"
+      >
+        {{ data.todo?.title }}
+      </h2>
     </div>
 
     <UiButton variant="destructive" size="icon" @click="deleteTodo">
@@ -59,6 +97,6 @@ async function deleteTodo() {
 
   <div v-if="data?.todo?.description">
     <UiSeparator my-4 />
-    <p>{{ data?.todo.description }}</p>
+    <p>{{ data.todo.description }}</p>
   </div>
 </template>
