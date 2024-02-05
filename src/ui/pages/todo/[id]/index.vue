@@ -15,6 +15,7 @@ const defaultTodo = computed(() =>
 );
 
 const { data } = useLazyFetch<TodoIdResponse>(`/api/todos/${route.params.id}`, {
+  key: `todo-${route.params.id}`,
   immediate: !defaultTodo.value,
   default() {
     return {
@@ -67,7 +68,9 @@ async function toggleTodo() {
     },
     async onResponse() {
       await refreshNuxtData('todos');
+      await refreshNuxtData(`todo-${route.params.id}`);
       app.payload.data.todos = undefined;
+      app.payload.data[`todo-${route.params.id}`] = undefined;
     },
   });
 }

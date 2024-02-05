@@ -50,7 +50,9 @@ async function toggleTodo(id: Todo['id']) {
     },
     async onResponse() {
       await refreshNuxtData('todos');
+      await refreshNuxtData(`todos-${id}`);
       app.payload.data.todos = undefined;
+      app.payload.data[`todos-${id}`] = undefined;
     },
   });
 }
