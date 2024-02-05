@@ -23,7 +23,9 @@ const { data } = useFetch<TodosResponse>('/api/todos', {
           <UiTableRow v-for="todo in data?.todos" :key="todo.id">
             <UiTableCell>
               <NuxtLink :to="`/todo/${todo.id}`">
-                {{ todo.title }}
+                <UiButton variant="link" class="px-0">
+                  {{ todo.title }}
+                </UiButton>
               </NuxtLink>
             </UiTableCell>
           </UiTableRow>
