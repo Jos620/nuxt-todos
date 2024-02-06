@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
 
+import type { TodoIdPatchResponse } from '@/infra/http/api/todos/[id]/index.patch';
 import type { TodoIdResponse } from '~/infra/http/api/todos/[id]/index.get';
 import type { TodosResponse } from '~/infra/http/api/todos/index.get';
 
@@ -47,30 +48,33 @@ async function toggleTodo() {
   await $fetch(`/api/todos/${route.params.id}`, {
     method: 'PATCH',
     onRequest() {
+      if (!data.value.todo) return;
+
+      data.value.todo.isCompleted = !data.value.todo.isCompleted;
+
       if (cachedTodos.value) {
         previousCachedTodos.value = { ...cachedTodos.value };
-      }
 
-      if (data.value.todo) {
-        data.value.todo.isCompleted = !data.value.todo.isCompleted;
-      }
+        const cachedTodo = cachedTodos.value?.todos.find(
+          (todo) => todo.id === route.params.id,
+        );
 
-      const cachedTodo = cachedTodos.value?.todos.find(
-        (todo) => todo.id === route.params.id,
-      );
-      if (cachedTodo) {
-        cachedTodo.isCompleted = !cachedTodo.isCompleted;
+        if (cachedTodo) {
+          cachedTodo.isCompleted = !cachedTodo.isCompleted;
+        }
       }
     },
     onRequestError() {
       if (!previousCachedTodos.value) return;
       cachedTodos.value = previousCachedTodos.value;
     },
-    async onResponse() {
-      await refreshNuxtData('todos');
-      await refreshNuxtData(`todo-${route.params.id}`);
+    async onResponse({ response }) {
       app.payload.data.todos = undefined;
-      app.payload.data[`todo-${route.params.id}`] = undefined;
+      await refreshNuxtData('todos');
+
+      const updatedTodo = response._data as TodoIdPatchResponse;
+
+      app.payload.data[`todo-${updatedTodo.todo?.id}`] = updatedTodo;
     },
   });
 }

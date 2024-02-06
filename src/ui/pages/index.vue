@@ -25,8 +25,8 @@ async function deleteTodo(id: Todo['id']) {
       data.value = previousData.value;
     },
     async onResponse() {
-      await refreshNuxtData('todos');
       app.payload.data.todos = undefined;
+      await refreshNuxtData('todos');
     },
   });
 }
@@ -49,10 +49,10 @@ async function toggleTodo(id: Todo['id']) {
       data.value = previousData.value;
     },
     async onResponse() {
-      await refreshNuxtData('todos');
-      await refreshNuxtData(`todos-${id}`);
       app.payload.data.todos = undefined;
-      app.payload.data[`todos-${id}`] = undefined;
+      app.payload.data[`todo-${id}`] = undefined;
+      await refreshNuxtData('todos');
+      await refreshNuxtData(`todo-${id}`);
     },
   });
 }
