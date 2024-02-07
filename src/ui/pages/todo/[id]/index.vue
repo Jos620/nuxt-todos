@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
 
-import type { TodoIdPatchResponse } from '@/infra/http/api/todos/[id]/index.patch';
 import type { TodoIdResponse } from '~/infra/http/api/todos/[id]/index.get';
+import type { TodoIdPatchResponse } from '~/infra/http/api/todos/[id]/index.patch';
 import type { TodosResponse } from '~/infra/http/api/todos/index.get';
 
 const route = useRoute();
@@ -14,7 +14,6 @@ const defaultTodo = computed(() =>
   cachedTodos.value?.todos.find((todo) => todo.id === route.params.id),
 );
 
-const previousData = ref<TodoIdResponse>();
 const { data } = useLazyFetch<TodoIdResponse>(`/api/todos/${route.params.id}`, {
   key: `todo-${route.params.id}`,
   immediate: !defaultTodo.value,
@@ -24,7 +23,7 @@ const { data } = useLazyFetch<TodoIdResponse>(`/api/todos/${route.params.id}`, {
   getCachedData: (key) => app.payload.data[key],
 });
 
-async function deleteTodo() {
+async function handleDeleteTodo() {
   await $fetch(`/api/todos/${route.params.id}`, {
     method: 'DELETE',
     async onResponse() {
@@ -42,20 +41,16 @@ async function deleteTodo() {
   });
 }
 
-async function toggleTodo() {
+async function handleTodoToggle() {
+  function toggleTodo() {
+    if (!data.value.todo) return;
+    data.value.todo.isCompleted = !data.value.todo.isCompleted;
+  }
+
   await $fetch(`/api/todos/${route.params.id}`, {
     method: 'PATCH',
-    onRequest() {
-      if (!data.value.todo) return;
-
-      previousData.value = JSON.parse(JSON.stringify(data.value));
-      data.value.todo.isCompleted = !data.value.todo.isCompleted;
-    },
-    onResponseError() {
-      if (previousData.value) {
-        data.value = previousData.value;
-      }
-    },
+    onRequest: toggleTodo,
+    onResponseError: toggleTodo,
     async onResponse({ response }) {
       app.payload.data.todos = undefined;
       await refreshNuxtData('todos');
@@ -75,17 +70,18 @@ async function toggleTodo() {
         <div i-mdi:chevron-left text="2xl muted hover:primary" />
       </NuxtLink>
 
-      <UiCheckbox :checked="data.todo?.isCompleted" mr-2 @click="toggleTodo" />
+      <UiCheckbox :checked="data.todo?.isCompleted" @click="handleTodoToggle" />
 
       <h2
         pb-0
+        ml-2
         :class="{ 'line-through text-3xl text-muted': data.todo?.isCompleted }"
       >
         {{ data.todo?.title }}
       </h2>
     </div>
 
-    <UiButton variant="destructive" size="icon" @click="deleteTodo">
+    <UiButton variant="destructive" size="icon" @click="handleDeleteTodo">
       <div i-mdi:delete />
     </UiButton>
   </div>
