@@ -9,7 +9,6 @@ const route = useRoute();
 const router = useRouter();
 const app = useNuxtApp();
 
-const previousCachedTodos = ref<TodosResponse>();
 const { data: cachedTodos } = useNuxtData<TodosResponse>('todos');
 const defaultTodo = computed(() =>
   cachedTodos.value?.todos.find((todo) => todo.id === route.params.id),
@@ -51,26 +50,10 @@ async function toggleTodo() {
 
       previousData.value = JSON.parse(JSON.stringify(data.value));
       data.value.todo.isCompleted = !data.value.todo.isCompleted;
-
-      if (cachedTodos.value) {
-        previousCachedTodos.value = JSON.parse(
-          JSON.stringify(cachedTodos.value),
-        );
-
-        cachedTodos.value.todos = [
-          ...cachedTodos.value.todos.map((todo) =>
-            todo.id === route.params.id ? data.value.todo || todo : todo,
-          ),
-        ];
-      }
     },
     onResponseError() {
       if (previousData.value) {
         data.value = previousData.value;
-      }
-
-      if (previousCachedTodos.value) {
-        cachedTodos.value = previousCachedTodos.value;
       }
     },
     async onResponse({ response }) {
