@@ -1,6 +1,6 @@
 import { CreateTodoService } from '~/app/services/todo/create-todo';
 import { DrizzleDatabase } from '~/infra/database/drizzle';
-import { bodySchema } from '~/infra/http/validations/todos';
+import { bodySchema } from '~/infra/http/dto/todos';
 import { type TodoHTTP, TodoViewModel } from '~/infra/http/view-models/todo';
 
 export interface CreateTodoResponse {

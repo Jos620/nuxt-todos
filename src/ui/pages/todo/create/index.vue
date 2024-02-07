@@ -4,7 +4,7 @@ import { Field, useForm } from 'vee-validate';
 
 import type { TodosResponse } from '@/infra/http/api/todos/index.get';
 import type { CreateTodoResponse } from '~/infra/http/api/todos/index.post';
-import { bodySchema } from '~/infra/http/validations/todos';
+import { bodySchema } from '~/infra/http/dto/todos';
 
 const app = useNuxtApp();
 const router = useRouter();
