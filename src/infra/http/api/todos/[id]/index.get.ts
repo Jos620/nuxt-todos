@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { GetTodoService } from '~/app/services/todo/get-todo';
 import { DrizzleDatabase } from '~/infra/database/drizzle';
-import { TodoHTTP, TodoViewModel } from '~/infra/http/view-models/todo';
+import { type TodoHTTP, TodoViewModel } from '~/infra/http/view-models/todo';
 
 export interface TodoIdResponse {
   todo?: TodoHTTP;
