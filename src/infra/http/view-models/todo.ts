@@ -7,7 +7,7 @@ export class TodoViewModel {
       title: todo.title,
       description: todo.description,
       isCompleted: todo.isCompleted,
-      completedAt: todo.completedAt,
+      completedAt: todo.completedAt?.toString(),
     };
   }
 }
