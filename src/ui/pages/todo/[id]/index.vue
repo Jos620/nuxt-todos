@@ -15,6 +15,7 @@ const defaultTodo = computed(() =>
   cachedTodos.value?.todos.find((todo) => todo.id === route.params.id),
 );
 
+const previousData = ref<TodoIdResponse>();
 const { data } = useLazyFetch<TodoIdResponse>(`/api/todos/${route.params.id}`, {
   key: `todo-${route.params.id}`,
   immediate: !defaultTodo.value,
@@ -48,23 +49,29 @@ async function toggleTodo() {
     onRequest() {
       if (!data.value.todo) return;
 
+      previousData.value = JSON.parse(JSON.stringify(data.value));
       data.value.todo.isCompleted = !data.value.todo.isCompleted;
 
       if (cachedTodos.value) {
-        previousCachedTodos.value = { ...cachedTodos.value };
-
-        const cachedTodo = cachedTodos.value?.todos.find(
-          (todo) => todo.id === route.params.id,
+        previousCachedTodos.value = JSON.parse(
+          JSON.stringify(cachedTodos.value),
         );
 
-        if (cachedTodo) {
-          cachedTodo.isCompleted = !cachedTodo.isCompleted;
-        }
+        cachedTodos.value.todos = [
+          ...cachedTodos.value.todos.map((todo) =>
+            todo.id === route.params.id ? data.value.todo || todo : todo,
+          ),
+        ];
       }
     },
-    onRequestError() {
-      if (!previousCachedTodos.value) return;
-      cachedTodos.value = previousCachedTodos.value;
+    onResponseError() {
+      if (previousData.value) {
+        data.value = previousData.value;
+      }
+
+      if (previousCachedTodos.value) {
+        cachedTodos.value = previousCachedTodos.value;
+      }
     },
     async onResponse({ response }) {
       app.payload.data.todos = undefined;
