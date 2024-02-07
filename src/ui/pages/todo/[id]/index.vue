@@ -18,11 +18,9 @@ const defaultTodo = computed(() =>
 const { data } = useLazyFetch<TodoIdResponse>(`/api/todos/${route.params.id}`, {
   key: `todo-${route.params.id}`,
   immediate: !defaultTodo.value,
-  default() {
-    return {
-      todo: defaultTodo.value,
-    };
-  },
+  default: () => ({
+    todo: defaultTodo.value,
+  }),
   getCachedData: (key) => app.payload.data[key],
 });
 
@@ -30,18 +28,18 @@ async function deleteTodo() {
   await $fetch(`/api/todos/${route.params.id}`, {
     method: 'DELETE',
     async onResponse() {
-      if (!cachedTodos.value) return;
+      if (cachedTodos.value) {
+        cachedTodos.value.todos = cachedTodos.value.todos.filter(
+          (todo) => todo.id !== route.params.id,
+        );
 
-      cachedTodos.value.todos = cachedTodos.value.todos.filter(
-        (todo) => todo.id !== route.params.id,
-      );
+        app.payload.data.todos = undefined;
+        await refreshNuxtData('todos');
+      }
 
-      await refreshNuxtData('todos');
-      app.payload.data.todos = undefined;
+      await router.push('/');
     },
   });
-
-  await router.push('/');
 }
 
 async function toggleTodo() {
