@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useDark();
+const isDark = useDark();
 </script>
 
 <template>
@@ -9,12 +9,19 @@ useDark();
         <h3>Nuxt Todo List</h3>
       </NuxtLink>
 
-      <NuxtLink to="/todo/create">
-        <UiButton flex gap-2>
-          <div i-mdi:pencil />
-          New
+      <div center gap-4>
+        <UiButton variant="outline" @click="isDark = !isDark">
+          <div v-if="isDark" i-mdi:white-balance-sunny />
+          <div v-else i-mdi:weather-night />
         </UiButton>
-      </NuxtLink>
+
+        <NuxtLink to="/todo/create">
+          <UiButton flex gap-2>
+            <div i-mdi:pencil />
+            New
+          </UiButton>
+        </NuxtLink>
+      </div>
     </div>
   </header>
 
