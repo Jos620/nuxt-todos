@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { TodoIdPatchResponse } from '@/infra/http/api/todos/[id]/index.patch';
 import type { Todo } from '~/app/entities/todo';
 import type { TodosResponse } from '~/infra/http/api/todos/index.get';
 import { API } from '~/ui/lib/api';
@@ -28,14 +29,23 @@ async function toggleTodo(id: Todo['id']) {
   const todo = data.value.todos.find((todo) => todo.id === id);
   if (!todo) return;
 
-  await API.patch(`/api/todos/${id}`, {
-    body: { isCompleted: !todo.isCompleted },
-    originalData: data,
-    revalidateKey: ['todos', `todo-${id}`],
-    optimisticUpdate() {
-      todo.isCompleted = !todo.isCompleted;
+  const { todo: newTodo } = await API.patch<TodosResponse, TodoIdPatchResponse>(
+    `/api/todos/${id}`,
+    {
+      body: { isCompleted: !todo.isCompleted },
+      revalidateKey: ['todos', `todo-${id}`],
+      originalData: data,
+      optimisticUpdate() {
+        todo.isCompleted = !todo.isCompleted;
+      },
     },
-  });
+  );
+  if (!newTodo) return;
+
+  app.payload.data[`todo-${id}`] = { todo: newTodo };
+  data.value.todos = data.value.todos.map((todo) =>
+    todo.id === id ? newTodo : todo,
+  );
 }
 </script>
 
