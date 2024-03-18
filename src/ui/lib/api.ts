@@ -29,12 +29,12 @@ export class API {
 
         fetchOptions.onRequest?.(context);
       },
-      onRequestError(context) {
+      onResponseError(context) {
         if (originalData && backup) {
           originalData.value = backup;
         }
 
-        fetchOptions.onRequestError?.(context);
+        fetchOptions.onResponseError?.(context);
       },
       async onResponse(context) {
         if (revalidateKey) {
