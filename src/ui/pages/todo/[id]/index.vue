@@ -41,21 +41,20 @@ async function handleDeleteTodo() {
 }
 
 async function handleTodoToggle() {
-  function toggleTodo() {
-    if (!data.value.todo) return;
-    data.value.todo.isCompleted = !data.value.todo.isCompleted;
-  }
-
   const { todo } = await API.patch<TodoIdPatchResponse>(
     `/api/todos/${route.params.id}`,
     {
-      onRequest: toggleTodo,
-      onResponseError: toggleTodo,
       revalidateKey: 'todos',
+      originalData: data,
+      optimisticUpdate() {
+        if (!data.value.todo) return;
+        data.value.todo.isCompleted = !data.value.todo.isCompleted;
+      },
     },
   );
 
   app.payload.data[`todo-${todo?.id}`] = todo;
+  data.value.todo = todo;
 }
 </script>
 

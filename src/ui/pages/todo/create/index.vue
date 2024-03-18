@@ -52,4 +52,3 @@ const onSubmit = form.handleSubmit(async (values) => {
     <UiButton type="submit">Submit</UiButton>
   </form>
 </template>
-@/ui/lib/api
