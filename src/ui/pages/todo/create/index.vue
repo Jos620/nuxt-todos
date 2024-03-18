@@ -13,8 +13,7 @@ const form = useForm({
 });
 
 const onSubmit = form.handleSubmit(async (values) => {
-  const { todo } = await API.fetch<CreateTodoResponse>('/api/todos', {
-    method: 'POST',
+  const { todo } = await API.post<CreateTodoResponse>('/api/todos', {
     body: values,
     revalidateKey: 'todos',
   });

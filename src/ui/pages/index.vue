@@ -28,8 +28,7 @@ async function toggleTodo(id: Todo['id']) {
   const todo = data.value.todos.find((todo) => todo.id === id);
   if (!todo) return;
 
-  await API.fetch(`/api/todos/${id}`, {
-    method: 'PATCH',
+  await API.patch(`/api/todos/${id}`, {
     body: { isCompleted: !todo.isCompleted },
     originalData: data,
     revalidateKey: ['todos', `todo-${id}`],

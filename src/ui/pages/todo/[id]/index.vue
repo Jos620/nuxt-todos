@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
 
+import { API } from '@/ui/lib/api';
 import type { TodoIdResponse } from '~/infra/http/api/todos/[id]/index.get';
 import type { TodoIdPatchResponse } from '~/infra/http/api/todos/[id]/index.patch';
 import type { TodosResponse } from '~/infra/http/api/todos/index.get';
@@ -24,18 +25,16 @@ const { data } = useLazyFetch<TodoIdResponse>(`/api/todos/${route.params.id}`, {
 });
 
 async function handleDeleteTodo() {
-  await $fetch(`/api/todos/${route.params.id}`, {
-    method: 'DELETE',
+  await API.delete(`/api/todos/${route.params.id}`, {
+    revalidateKey: 'todos',
+    optimisticUpdate() {
+      if (!cachedTodos.value) return;
+
+      cachedTodos.value.todos = cachedTodos.value.todos.filter(
+        (todo) => todo.id !== route.params.id,
+      );
+    },
     async onResponse() {
-      if (cachedTodos.value) {
-        cachedTodos.value.todos = cachedTodos.value.todos.filter(
-          (todo) => todo.id !== route.params.id,
-        );
-
-        app.payload.data.todos = undefined;
-        await refreshNuxtData('todos');
-      }
-
       await router.push('/');
     },
   });
@@ -47,19 +46,16 @@ async function handleTodoToggle() {
     data.value.todo.isCompleted = !data.value.todo.isCompleted;
   }
 
-  await $fetch(`/api/todos/${route.params.id}`, {
-    method: 'PATCH',
-    onRequest: toggleTodo,
-    onResponseError: toggleTodo,
-    async onResponse({ response }) {
-      app.payload.data.todos = undefined;
-      await refreshNuxtData('todos');
-
-      const updatedTodo = response._data as TodoIdPatchResponse;
-
-      app.payload.data[`todo-${updatedTodo.todo?.id}`] = updatedTodo;
+  const { todo } = await API.patch<TodoIdPatchResponse>(
+    `/api/todos/${route.params.id}`,
+    {
+      onRequest: toggleTodo,
+      onResponseError: toggleTodo,
+      revalidateKey: 'todos',
     },
-  });
+  );
+
+  app.payload.data[`todo-${todo?.id}`] = todo;
 }
 </script>
 
