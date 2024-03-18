@@ -22,31 +22,32 @@ export class API {
     return await $fetch(route, {
       ...fetchOptions,
       onRequest(context) {
-        fetchOptions.onRequest?.(context);
-
         const rawOriginalData = toRaw(unref(originalData));
         backup = structuredClone(rawOriginalData);
 
         optimisticUpdate?.();
+
+        fetchOptions.onRequest?.(context);
       },
       onRequestError(context) {
-        fetchOptions.onRequestError?.(context);
+        if (originalData && backup) {
+          originalData.value = backup;
+        }
 
-        if (!originalData || !backup) return;
-        originalData.value = backup;
+        fetchOptions.onRequestError?.(context);
       },
       async onResponse(context) {
-        fetchOptions.onResponse?.(context);
+        if (revalidateKey) {
+          const app = useNuxtApp();
+          const keys = asArray(revalidateKey);
 
-        if (!revalidateKey) return;
-
-        const app = useNuxtApp();
-        const keys = asArray(revalidateKey);
-
-        for (const key of keys) {
-          app.payload.data[key] = undefined;
-          await refreshNuxtData(key);
+          for (const key of keys) {
+            app.payload.data[key] = undefined;
+            await refreshNuxtData(key);
+          }
         }
+
+        fetchOptions.onResponse?.(context);
       },
     });
   }
