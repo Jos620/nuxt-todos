@@ -29,23 +29,25 @@ async function toggleTodo(id: Todo['id']) {
   const todo = data.value.todos.find((todo) => todo.id === id);
   if (!todo) return;
 
-  const { todo: newTodo } = await API.patch<TodosResponse, TodoIdPatchResponse>(
-    `/api/todos/${id}`,
-    {
-      body: { isCompleted: !todo.isCompleted },
-      revalidateKey: ['todos', `todo-${id}`],
-      originalData: data,
-      optimisticUpdate() {
-        todo.isCompleted = !todo.isCompleted;
-      },
+  const { todo: newTodo } = await API.patch<
+    MultipleTodosResponse,
+    SingleTodoResponse
+  >(`/api/todos/${id}`, {
+    body: { isCompleted: !todo.isCompleted },
+    originalData: data,
+    optimisticUpdate() {
+      todo.isCompleted = !todo.isCompleted;
     },
-  );
+  });
   if (!newTodo) return;
 
   app.payload.data[`todo-${id}`] = { todo: newTodo };
-  data.value.todos = data.value.todos.map((todo) =>
+  const newTodos = data.value.todos.map((todo) =>
     todo.id === id ? newTodo : todo,
   );
+  app.payload.data.todos = {
+    todos: newTodos,
+  };
 }
 </script>
 
