@@ -2,27 +2,21 @@
 import { toTypedSchema } from '@vee-validate/zod';
 import { Field, useForm } from 'vee-validate';
 
-import type { TodosResponse } from '@/infra/http/api/todos/index.get';
 import type { CreateTodoResponse } from '~/infra/http/api/todos/index.post';
 import { bodySchema } from '~/infra/http/dto/todos';
+import { API } from '~/ui/lib/api';
 
-const app = useNuxtApp();
 const router = useRouter();
-
-useNuxtData<TodosResponse>('todos');
 
 const form = useForm({
   validationSchema: toTypedSchema(bodySchema),
 });
 
 const onSubmit = form.handleSubmit(async (values) => {
-  const { todo } = await $fetch<CreateTodoResponse>('/api/todos', {
+  const { todo } = await API.fetch<CreateTodoResponse>('/api/todos', {
     method: 'POST',
     body: values,
-    async onResponse() {
-      await refreshNuxtData('todos');
-      app.payload.data.todos = undefined;
-    },
+    revalidateKey: 'todos',
   });
   if (!todo) return;
 
@@ -59,3 +53,4 @@ const onSubmit = form.handleSubmit(async (values) => {
     <UiButton type="submit">Submit</UiButton>
   </form>
 </template>
+@/ui/lib/api

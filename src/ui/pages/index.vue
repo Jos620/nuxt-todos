@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Todo } from '~/app/entities/todo';
 import type { TodosResponse } from '~/infra/http/api/todos/index.get';
+import { API } from '~/ui/lib/api';
 
 const app = useNuxtApp();
 
-const previousData = ref<TodosResponse>();
 const { data } = useFetch<TodosResponse>('/api/todos', {
   key: 'todos',
   getCachedData: (key) => app.payload.data[key],
@@ -12,21 +12,12 @@ const { data } = useFetch<TodosResponse>('/api/todos', {
 });
 
 async function deleteTodo(id: Todo['id']) {
-  if (!data.value?.todos) return;
-
-  await $fetch(`/api/todos/${id}`, {
+  await API.fetch(`/api/todos/${id}`, {
     method: 'DELETE',
-    onRequest() {
-      previousData.value = { ...data.value };
+    originalData: data,
+    revalidateKey: 'todos',
+    optimisticUpdate() {
       data.value.todos = data.value.todos.filter((todo) => todo.id !== id);
-    },
-    onRequestError() {
-      if (!previousData.value) return;
-      data.value = previousData.value;
-    },
-    async onResponse() {
-      app.payload.data.todos = undefined;
-      await refreshNuxtData('todos');
     },
   });
 }
@@ -37,22 +28,13 @@ async function toggleTodo(id: Todo['id']) {
   const todo = data.value.todos.find((todo) => todo.id === id);
   if (!todo) return;
 
-  await $fetch(`/api/todos/${id}`, {
+  await API.fetch(`/api/todos/${id}`, {
     method: 'PATCH',
     body: { isCompleted: !todo.isCompleted },
-    onRequest() {
-      previousData.value = { ...data.value };
+    originalData: data,
+    revalidateKey: ['todos', `todo-${id}`],
+    optimisticUpdate() {
       todo.isCompleted = !todo.isCompleted;
-    },
-    onRequestError() {
-      if (!previousData.value) return;
-      data.value = previousData.value;
-    },
-    async onResponse() {
-      app.payload.data.todos = undefined;
-      app.payload.data[`todo-${id}`] = undefined;
-      await refreshNuxtData('todos');
-      await refreshNuxtData(`todo-${id}`);
     },
   });
 }
@@ -110,3 +92,4 @@ async function toggleTodo(id: Todo['id']) {
     </UiTableBody>
   </UiTable>
 </template>
+../lib/api
