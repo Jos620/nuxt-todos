@@ -2,6 +2,12 @@
 import { Todo } from '../../src/app/entities/todo';
 import type { TodosRepository } from '../../src/app/repositories/todo';
 
+export const fakeTodos: string[][] = [
+  ['Do the laundry', "Don't mix colors!"],
+  ['Walk the dog'],
+  ['Buy some milk', 'Remember to check the expiration date!'],
+];
+
 export class InMemoryDatabase implements TodosRepository {
   todos: Todo[] = [];
 
@@ -10,12 +16,6 @@ export class InMemoryDatabase implements TodosRepository {
       this.todos = todos;
       return this;
     }
-
-    const fakeTodos: string[][] = [
-      ['Do the laundry', "Don't mix colors!"],
-      ['Walk the dog'],
-      ['Buy some milk', 'Remember to check the expiration date!'],
-    ];
 
     this.todos = fakeTodos.map(([title, description]) => {
       return new Todo({
@@ -28,7 +28,7 @@ export class InMemoryDatabase implements TodosRepository {
   }
 
   async getAllTodos(): Promise<Todo[]> {
-    return this.todos;
+    return this.todos.filter(Boolean);
   }
 
   async getTodoById(id: string): Promise<Todo> {
