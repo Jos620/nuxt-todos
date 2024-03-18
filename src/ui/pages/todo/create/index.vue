@@ -24,7 +24,7 @@ const onSubmit = form.handleSubmit(async (values) => {
 </script>
 
 <template>
-  <form space-y-6 @submit="onSubmit">
+  <form space-y-6 max-w="5xl" mx-auto @submit="onSubmit">
     <Field v-slot="{ componentField }" name="title">
       <UiFormItem>
         <UiFormLabel>Title</UiFormLabel>
