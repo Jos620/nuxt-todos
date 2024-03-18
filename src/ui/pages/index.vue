@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import type { TodoIdPatchResponse } from '@/infra/http/api/todos/[id]/index.patch';
 import type { Todo } from '~/app/entities/todo';
-import type { TodosResponse } from '~/infra/http/api/todos/index.get';
+import type {
+  MultipleTodosResponse,
+  SingleTodoResponse,
+} from '~/infra/http/view-models/todo';
 import { API } from '~/ui/lib/api';
 
 const app = useNuxtApp();
 
-const { data } = useFetch<TodosResponse>('/api/todos', {
+const { data } = useFetch<MultipleTodosResponse>('/api/todos', {
   key: 'todos',
   getCachedData: (key) => app.payload.data[key],
   default: () => ({ todos: [] }),

@@ -2,7 +2,7 @@
 import { toTypedSchema } from '@vee-validate/zod';
 import { Field, useForm } from 'vee-validate';
 
-import type { CreateTodoResponse } from '~/infra/http/api/todos/index.post';
+import type { SingleTodoResponse } from '@/infra/http/view-models/todo';
 import { createTodoDTO } from '~/infra/http/dto/todos';
 import { API } from '~/ui/lib/api';
 
@@ -13,7 +13,7 @@ const form = useForm({
 });
 
 const onSubmit = form.handleSubmit(async (values) => {
-  const { todo } = await API.post<CreateTodoResponse>('/api/todos', {
+  const { todo } = await API.post<SingleTodoResponse>('/api/todos', {
     body: values,
     revalidateKey: 'todos',
   });

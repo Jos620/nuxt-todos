@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
 
+import type {
+  MultipleTodosResponse,
+  SingleTodoResponse,
+} from '@/infra/http/view-models/todo';
 import { API } from '@/ui/lib/api';
 import type { TodoIdResponse } from '~/infra/http/api/todos/[id]/index.get';
-import type { TodoIdPatchResponse } from '~/infra/http/api/todos/[id]/index.patch';
-import type { TodosResponse } from '~/infra/http/api/todos/index.get';
 
 const route = useRoute();
 const router = useRouter();
 const app = useNuxtApp();
 
-const { data: cachedTodos } = useNuxtData<TodosResponse>('todos');
+const { data: cachedTodos } = useNuxtData<MultipleTodosResponse>('todos');
 const defaultTodo = computed(() =>
   cachedTodos.value?.todos.find((todo) => todo.id === route.params.id),
 );
@@ -41,7 +43,7 @@ async function handleDeleteTodo() {
 }
 
 async function handleTodoToggle() {
-  const { todo } = await API.patch<TodoIdPatchResponse>(
+  const { todo } = await API.patch<SingleTodoResponse>(
     `/api/todos/${route.params.id}`,
     {
       revalidateKey: ['todos'],

@@ -1,13 +1,12 @@
 import { CreateTodoService } from '~/app/services/todo/create-todo';
 import { DrizzleDatabase } from '~/infra/database/drizzle';
 import { createTodoDTO } from '~/infra/http/dto/todos';
-import { type TodoHTTP, TodoViewModel } from '~/infra/http/view-models/todo';
+import {
+  type SingleTodoResponse,
+  TodoViewModel,
+} from '~/infra/http/view-models/todo';
 
-export interface CreateTodoResponse {
-  todo?: TodoHTTP;
-}
-
-export default defineEventHandler<Promise<CreateTodoResponse>>(
+export default defineEventHandler<Promise<SingleTodoResponse>>(
   async (event) => {
     const db = DrizzleDatabase.getInstance();
     const createTodoService = new CreateTodoService(db);

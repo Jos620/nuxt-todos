@@ -1,12 +1,11 @@
 import { GetAllTodosService } from '~/app/services/todo/get-all-todos';
 import { DrizzleDatabase } from '~/infra/database/drizzle';
-import { type TodoHTTP, TodoViewModel } from '~/infra/http/view-models/todo';
+import {
+  type MultipleTodosResponse,
+  TodoViewModel,
+} from '~/infra/http/view-models/todo';
 
-export interface TodosResponse {
-  todos: TodoHTTP[];
-}
-
-export default defineEventHandler<Promise<TodosResponse>>(async () => {
+export default defineEventHandler<Promise<MultipleTodosResponse>>(async () => {
   const db = DrizzleDatabase.getInstance();
   const getAllTodosService = new GetAllTodosService(db);
 

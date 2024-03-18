@@ -13,3 +13,11 @@ export class TodoViewModel {
 }
 
 export type TodoHTTP = ReturnType<typeof TodoViewModel.toHTTP>;
+
+export interface SingleTodoResponse {
+  todo?: TodoHTTP;
+}
+
+export interface MultipleTodosResponse {
+  todos: TodoHTTP[];
+}
