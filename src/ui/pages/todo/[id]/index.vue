@@ -44,7 +44,7 @@ async function handleTodoToggle() {
   const { todo } = await API.patch<TodoIdPatchResponse>(
     `/api/todos/${route.params.id}`,
     {
-      revalidateKey: 'todos',
+      revalidateKey: ['todos', `todo-${route.params.id}`],
       originalData: data,
       optimisticUpdate() {
         if (!data.value.todo) return;
@@ -52,8 +52,9 @@ async function handleTodoToggle() {
       },
     },
   );
+  if (!todo) return;
 
-  app.payload.data[`todo-${todo?.id}`] = todo;
+  app.payload.data[`todo-${route.params.id}`] = { todo };
   data.value.todo = todo;
 }
 </script>
