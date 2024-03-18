@@ -71,7 +71,7 @@ async function toggleTodo(id: Todo['id']) {
         </UiTableCell>
       </UiTableRow>
 
-      <UiTableRow v-for="todo in data?.todos" :key="todo.id">
+      <UiTableRow v-for="todo in data?.todos" :key="todo.id" data-testid="todo">
         <UiTableCell>
           <UiCheckbox
             :checked="todo.isCompleted"
