@@ -1,7 +1,6 @@
-import { z } from 'zod';
-
 import { CompleteTodoService } from '~/app/services/todo/complete-todo';
 import { DrizzleDatabase } from '~/infra/database/drizzle';
+import { findTodoDTO } from '~/infra/http/dto/todos';
 import { type TodoHTTP, TodoViewModel } from '~/infra/http/view-models/todo';
 
 export interface TodoIdPatchResponse {
@@ -14,11 +13,7 @@ export default defineEventHandler<Promise<TodoIdPatchResponse>>(
     const completeTodoService = new CompleteTodoService(db);
 
     const { id } = await getValidatedRouterParams(event, (params) => {
-      const schema = z.object({
-        id: z.string(),
-      });
-
-      return schema.parse(params);
+      return findTodoDTO.parse(params);
     });
 
     const todo = await completeTodoService.execute(id);

@@ -3,13 +3,13 @@ import { toTypedSchema } from '@vee-validate/zod';
 import { Field, useForm } from 'vee-validate';
 
 import type { CreateTodoResponse } from '~/infra/http/api/todos/index.post';
-import { bodySchema } from '~/infra/http/dto/todos';
+import { createTodoDTO } from '~/infra/http/dto/todos';
 import { API } from '~/ui/lib/api';
 
 const router = useRouter();
 
 const form = useForm({
-  validationSchema: toTypedSchema(bodySchema),
+  validationSchema: toTypedSchema(createTodoDTO),
 });
 
 const onSubmit = form.handleSubmit(async (values) => {

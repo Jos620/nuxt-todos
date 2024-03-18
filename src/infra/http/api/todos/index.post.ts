@@ -1,6 +1,6 @@
 import { CreateTodoService } from '~/app/services/todo/create-todo';
 import { DrizzleDatabase } from '~/infra/database/drizzle';
-import { bodySchema } from '~/infra/http/dto/todos';
+import { createTodoDTO } from '~/infra/http/dto/todos';
 import { type TodoHTTP, TodoViewModel } from '~/infra/http/view-models/todo';
 
 export interface CreateTodoResponse {
@@ -13,7 +13,7 @@ export default defineEventHandler<Promise<CreateTodoResponse>>(
     const createTodoService = new CreateTodoService(db);
 
     const { title, description } = await readValidatedBody(event, (body) => {
-      return bodySchema.parse(body);
+      return createTodoDTO.parse(body);
     });
 
     const newTodo = await createTodoService.execute({ title, description });

@@ -1,6 +1,6 @@
 import { GetTodoService } from '~/app/services/todo/get-todo';
 import { DrizzleDatabase } from '~/infra/database/drizzle';
-import { idRouteParamsSchema } from '~/infra/http/dto/todos';
+import { findTodoDTO } from '~/infra/http/dto/todos';
 import { type TodoHTTP, TodoViewModel } from '~/infra/http/view-models/todo';
 
 export interface TodoIdResponse {
@@ -12,7 +12,7 @@ export default defineEventHandler<Promise<TodoIdResponse>>(async (event) => {
   const getTodoService = new GetTodoService(db);
 
   const { id } = await getValidatedRouterParams(event, (params) => {
-    return idRouteParamsSchema.parse(params);
+    return findTodoDTO.parse(params);
   });
 
   const todo = await getTodoService.execute(id);
