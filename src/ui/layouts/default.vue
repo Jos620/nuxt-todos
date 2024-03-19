@@ -2,7 +2,6 @@
 import { isFocusingInput } from '../lib/window';
 
 const isDark = useDark();
-
 const router = useRouter();
 
 onKeyStroke('/', (e) => {
@@ -31,7 +30,7 @@ onKeyStroke('/', (e) => {
         <NuxtLink to="/todo/create">
           <UiButton flex gap-3>
             New
-            <KBD>/</KBD>
+            <KBD class="<lg:hidden">/</KBD>
           </UiButton>
         </NuxtLink>
       </div>
