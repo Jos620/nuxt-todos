@@ -19,7 +19,7 @@ onKeyStroke('/', (e) => {
   <header p-4 border="b-1 muted" bg="white dark:black" sticky top-0 z-1>
     <div container mx-auto center justify-between>
       <NuxtLink to="/">
-        <h3>Nuxt Todo List</h3>
+        <h3>Todo List</h3>
       </NuxtLink>
 
       <div center gap-4>
