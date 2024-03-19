@@ -105,4 +105,3 @@ async function toggleTodo(id: Todo['id']) {
     </UiTableBody>
   </UiTable>
 </template>
-../lib/api
