@@ -3,7 +3,7 @@ import { expect, test } from '..';
 test('Home title', async ({ page }) => {
   await page.goto('/', { waitUntil: 'networkidle' });
 
-  const heading = page.getByRole('heading', { name: 'Nuxt Todo List' });
+  const heading = page.getByRole('heading', { name: 'Todo List' });
 
   expect(await heading.isVisible()).toBeTruthy();
 });
