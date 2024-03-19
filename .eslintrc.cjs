@@ -28,6 +28,12 @@ module.exports = {
       },
     ],
     'no-useless-constructor': 'off',
+    camelcase: [
+      'error',
+      {
+        ignoreDestructuring: true,
+      },
+    ],
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
