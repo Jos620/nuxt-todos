@@ -67,7 +67,15 @@ async function toggleTodo(id: Todo['id']) {
     <UiTableBody>
       <UiTableRow v-if="!data?.todos.length">
         <UiTableCell :colspan="4">
-          <p text="muted center" py-20>No todos found.</p>
+          <div center>
+            <p text="muted" py-20>
+              Nothing left to do! <br />
+
+              Hit
+              <KBD variant="secondary" size="small">/</KBD>
+              to create a new todo.
+            </p>
+          </div>
         </UiTableCell>
       </UiTableRow>
 
