@@ -92,7 +92,7 @@ async function toggleTodo(id: Todo['id']) {
         <UiTableCell>
           <NuxtLink :to="`/todo/${todo.id}`" block w-full h-full>
             <p whitespace-pre line-clamp-2>
-              {{ todo.description || '-' }}
+              {{ todo.description?.trim() || '-' }}
             </p>
           </NuxtLink>
         </UiTableCell>

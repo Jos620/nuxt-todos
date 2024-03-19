@@ -84,7 +84,7 @@ async function handleTodoToggle() {
     </UiButton>
   </div>
 
-  <div v-if="data?.todo?.description">
+  <div v-if="data?.todo?.description?.trim()">
     <UiSeparator my-4 />
     <p whitespace-pre>{{ data.todo.description }}</p>
   </div>
