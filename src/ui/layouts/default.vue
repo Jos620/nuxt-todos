@@ -16,7 +16,7 @@ onKeyStroke('/', (e) => {
 </script>
 
 <template>
-  <header p-4 border="b-1 muted" bg="white dark:black">
+  <header p-4 border="b-1 muted" bg="white dark:black" sticky top-0 z-1>
     <div container mx-auto center justify-between>
       <NuxtLink to="/">
         <h3>Nuxt Todo List</h3>
