@@ -3,7 +3,7 @@ const isDark = useDark();
 </script>
 
 <template>
-  <header p-4 border="b-1 muted">
+  <header p-4 border="b-1 muted" bg="white dark:black">
     <div container mx-auto center justify-between>
       <NuxtLink to="/">
         <h3>Nuxt Todo List</h3>
