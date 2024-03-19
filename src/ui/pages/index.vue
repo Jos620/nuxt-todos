@@ -79,27 +79,33 @@ async function toggleTodo(id: Todo['id']) {
           />
         </UiTableCell>
         <UiTableCell>
-          <NuxtLink :to="`/todo/${todo.id}`">
-            <UiButton
-              variant="link"
-              class="px-0"
-              :class="{ 'line-through': todo.isCompleted }"
-            >
+          <UiButton
+            variant="link"
+            class="px-0 w-full h-full text-left"
+            :class="{ 'line-through': todo.isCompleted }"
+          >
+            <NuxtLink :to="`/todo/${todo.id}`" block w-full h-full>
               {{ todo.title }}
-            </UiButton>
-          </NuxtLink>
+            </NuxtLink>
+          </UiButton>
         </UiTableCell>
         <UiTableCell>
-          <p whitespace-pre line-clamp-2>{{ todo.description || '-' }}</p>
+          <NuxtLink :to="`/todo/${todo.id}`" block w-full h-full>
+            <p whitespace-pre line-clamp-2>
+              {{ todo.description || '-' }}
+            </p>
+          </NuxtLink>
         </UiTableCell>
         <UiTableCell text-right>
-          <UiButton
-            variant="destructive"
-            size="icon"
-            @click="deleteTodo(todo.id)"
-          >
-            <div i-mdi:delete></div>
-          </UiButton>
+          <NuxtLink :to="`/todo/${todo.id}`" block w-full h-full>
+            <UiButton
+              variant="destructive"
+              size="icon"
+              @click.prevent.stop="deleteTodo(todo.id)"
+            >
+              <div i-mdi:delete></div>
+            </UiButton>
+          </NuxtLink>
         </UiTableCell>
       </UiTableRow>
     </UiTableBody>
