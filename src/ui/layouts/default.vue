@@ -1,5 +1,18 @@
 <script setup lang="ts">
+import { isFocusingInput } from '../lib/window';
+
 const isDark = useDark();
+
+const router = useRouter();
+
+onKeyStroke('/', (e) => {
+  if (isFocusingInput()) {
+    return;
+  }
+
+  e.preventDefault();
+  router.push('/todo/create');
+});
 </script>
 
 <template>
@@ -16,9 +29,9 @@ const isDark = useDark();
         </UiButton>
 
         <NuxtLink to="/todo/create">
-          <UiButton flex gap-2>
-            <div i-mdi:pencil />
+          <UiButton flex gap-3>
             New
+            <KBD>/</KBD>
           </UiButton>
         </NuxtLink>
       </div>

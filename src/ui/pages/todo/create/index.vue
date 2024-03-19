@@ -29,6 +29,13 @@ const onSubmit = form.handleSubmit(async (values) => {
 
   router.push(`/todo/${todo.id}`);
 });
+
+onMounted(() => {
+  const titleInput = document.querySelector<HTMLInputElement>(
+    'input[name="title"]',
+  );
+  titleInput?.focus();
+});
 </script>
 
 <template>
