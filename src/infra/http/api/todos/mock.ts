@@ -10,9 +10,10 @@ import {
   TodoViewModel,
 } from '../../view-models/todo';
 
+const db = new InMemoryDatabase();
+
 export const apiTodosGet = http.get('/api/todos', async () => {
-  const db = new InMemoryDatabase().withTodos();
-  const getAllTodosService = new GetAllTodosService(db);
+  const getAllTodosService = new GetAllTodosService(db.withTodos());
 
   const todos = await getAllTodosService.execute();
 
@@ -22,7 +23,6 @@ export const apiTodosGet = http.get('/api/todos', async () => {
 });
 
 export const apiTodosPost = http.post('/api/todos', async ({ request }) => {
-  const db = new InMemoryDatabase();
   const createTodoService = new CreateTodoService(db);
 
   const body = createTodoDTO.parse(await request.json());

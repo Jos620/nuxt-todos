@@ -17,11 +17,13 @@ export class InMemoryDatabase implements TodosRepository {
       return this;
     }
 
-    this.todos = fakeTodos.map(([title, description]) => {
-      return new Todo({
+    fakeTodos.forEach(([title, description]) => {
+      const todo = new Todo({
         title,
         description,
       });
+
+      this.todos.push(todo);
     });
 
     return this;

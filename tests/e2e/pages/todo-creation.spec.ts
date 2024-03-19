@@ -24,4 +24,9 @@ test('Todo creation', async ({ page }) => {
   expect(
     await page.isVisible('p:has-text("This is my new todo")'),
   ).toBeTruthy();
+
+  await page.goto('/', { waitUntil: 'networkidle' });
+  const todo = page.getByText('My new todo');
+
+  expect(todo).toBeTruthy();
 });
