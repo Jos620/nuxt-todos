@@ -1,4 +1,4 @@
-import { expect, test } from '../.';
+import { expect, test } from '..';
 
 test('Home title', async ({ page }) => {
   await page.goto('/', { waitUntil: 'networkidle' });

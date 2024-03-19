@@ -1,3 +1,3 @@
-import { apiTodosGet } from '../../src/infra/http/api/todos/mock';
+import { apiTodosGet, apiTodosPost } from '../../src/infra/http/api/todos/mock';
 
-export default [apiTodosGet];
+export default [apiTodosGet, apiTodosPost];
