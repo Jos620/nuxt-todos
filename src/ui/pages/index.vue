@@ -4,10 +4,12 @@ import type {
   MultipleTodosResponse,
   SingleTodoResponse,
 } from '~/infra/http/dto/todos';
+import { singleTodoResponseSchema } from '~/infra/http/dto/todos';
 import { API } from '~/ui/lib/api';
 
 const app = useNuxtApp();
 
+const { data: cachedTodos } = useNuxtData<MultipleTodosResponse>('todos');
 const { data } = useFetch<MultipleTodosResponse>('/api/todos', {
   key: 'todos',
   getCachedData: (key) => app.payload.data[key],
@@ -15,12 +17,16 @@ const { data } = useFetch<MultipleTodosResponse>('/api/todos', {
 });
 
 async function deleteTodo(id: Todo['id']) {
-  await API.fetch(`/api/todos/${id}`, {
-    method: 'DELETE',
+  const { data: cachedTodo } = useNuxtData<SingleTodoResponse>(`todo-${id}`);
+
+  await API.delete(`/api/todos/${id}`, {
     originalData: data,
-    revalidateKey: 'todos',
     optimisticUpdate() {
       data.value.todos = data.value.todos.filter((todo) => todo.id !== id);
+    },
+    onResponse() {
+      cachedTodo.value = null;
+      app.payload.data[`todo-${id}`] = cachedTodo.value;
     },
   });
 }
@@ -31,25 +37,31 @@ async function toggleTodo(id: Todo['id']) {
   const todo = data.value.todos.find((todo) => todo.id === id);
   if (!todo) return;
 
-  const { todo: newTodo } = await API.patch<
-    MultipleTodosResponse,
-    SingleTodoResponse
-  >(`/api/todos/${id}`, {
+  await API.patch<MultipleTodosResponse>(`/api/todos/${id}`, {
     body: { isCompleted: !todo.isCompleted },
     originalData: data,
     optimisticUpdate() {
       todo.isCompleted = !todo.isCompleted;
     },
-  });
-  if (!newTodo) return;
+    onResponse({ response }) {
+      const { todo: newTodo } = singleTodoResponseSchema.parse(response._data);
+      if (!newTodo) return;
 
-  app.payload.data[`todo-${id}`] = { todo: newTodo };
-  const newTodos = data.value.todos.map((todo) =>
-    todo.id === id ? newTodo : todo,
-  );
-  app.payload.data.todos = {
-    todos: newTodos,
-  };
+      const { data: cachedTodo } = useNuxtData<SingleTodoResponse>(
+        `todo-${id}`,
+      );
+
+      cachedTodo.value = { todo: newTodo };
+      app.payload.data[`todo-${id}`] = cachedTodo.value;
+
+      cachedTodos.value = {
+        todos: data.value.todos.map((todo) =>
+          todo.id === id ? newTodo : todo,
+        ),
+      };
+      app.payload.data.todos = cachedTodos.value;
+    },
+  });
 }
 </script>
 
