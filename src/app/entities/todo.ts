@@ -1,7 +1,5 @@
 import { randomUUID } from 'node:crypto';
 
-import { z } from 'zod';
-
 export interface TodoProps {
   title: string;
   description?: string;
@@ -45,11 +43,3 @@ export class Todo {
     this.props.completedAt = this.props.completedAt ? undefined : new Date();
   }
 }
-
-export const todoSchema = z.object({
-  id: z.string().uuid(),
-  title: z.string().max(255),
-  description: z.string().max(255).optional(),
-  isCompleted: z.boolean(),
-  completedAt: z.date().optional(),
-});
