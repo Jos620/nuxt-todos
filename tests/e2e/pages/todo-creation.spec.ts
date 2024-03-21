@@ -26,7 +26,9 @@ test('Todo creation', async ({ page }) => {
   ).toBeTruthy();
 
   await page.goto('/', { waitUntil: 'networkidle' });
-  const todo = page.getByText('My new todo');
+  const todo = page.getByTestId('todo').filter({
+    hasText: 'My new todo',
+  });
 
-  expect(todo).toBeTruthy();
+  expect(await todo.textContent()).toContain('This is my new todo');
 });
