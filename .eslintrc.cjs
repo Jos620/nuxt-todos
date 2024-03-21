@@ -32,6 +32,7 @@ module.exports = {
       'error',
       {
         ignoreDestructuring: true,
+        properties: 'never',
       },
     ],
     '@typescript-eslint/no-unused-vars': [
