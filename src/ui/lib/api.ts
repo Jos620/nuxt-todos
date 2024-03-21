@@ -23,7 +23,9 @@ export class API {
       ...fetchOptions,
       onRequest(context) {
         const rawOriginalData = toRaw(unref(originalData));
-        backup = structuredClone(rawOriginalData);
+        if (rawOriginalData) {
+          backup = JSON.parse(JSON.stringify(rawOriginalData));
+        }
 
         optimisticUpdate?.();
 
