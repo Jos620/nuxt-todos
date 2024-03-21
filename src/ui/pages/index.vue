@@ -69,7 +69,7 @@ async function toggleTodo(id: Todo['id']) {
   <UiTable>
     <UiTableHeader>
       <UiTableRow>
-        <UiTableHead w="50px" />
+        <UiTableHead v-if="data.todos.length > 0" w="50px" />
         <UiTableHead>Title</UiTableHead>
         <UiTableHead>Description</UiTableHead>
         <UiTableHead text-right>Actions</UiTableHead>
@@ -77,21 +77,23 @@ async function toggleTodo(id: Todo['id']) {
     </UiTableHeader>
 
     <UiTableBody>
-      <UiTableRow v-if="!data?.todos.length">
+      <UiTableRow v-if="!data.todos.length">
         <UiTableCell :colspan="4">
           <div center>
             <p text="muted" py-20>
               Nothing left to do! <br />
 
-              Hit
-              <KBD variant="secondary" size="small">/</KBD>
-              to create a new todo.
+              <span class="<lg:hidden">
+                Hit
+                <KBD variant="secondary" size="small">/</KBD>
+                to create a new todo.
+              </span>
             </p>
           </div>
         </UiTableCell>
       </UiTableRow>
 
-      <UiTableRow v-for="todo in data?.todos" :key="todo.id" data-testid="todo">
+      <UiTableRow v-for="todo in data.todos" :key="todo.id" data-testid="todo">
         <UiTableCell>
           <UiCheckbox
             :checked="todo.isCompleted"
