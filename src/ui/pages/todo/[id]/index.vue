@@ -4,9 +4,8 @@ import { useRoute, useRouter } from 'vue-router';
 import type {
   MultipleTodosResponse,
   SingleTodoResponse,
-} from '@/infra/http/view-models/todo';
+} from '@/infra/http/dto/todos';
 import { API } from '@/ui/lib/api';
-import type { TodoIdResponse } from '~/infra/http/api/todos/[id]/index.get';
 
 const route = useRoute();
 const router = useRouter();
@@ -17,14 +16,17 @@ const defaultTodo = computed(() =>
   cachedTodos.value?.todos.find((todo) => todo.id === route.params.id),
 );
 
-const { data } = useLazyFetch<TodoIdResponse>(`/api/todos/${route.params.id}`, {
-  key: `todo-${route.params.id}`,
-  immediate: !defaultTodo.value,
-  default: () => ({
-    todo: defaultTodo.value,
-  }),
-  getCachedData: (key) => app.payload.data[key],
-});
+const { data } = useLazyFetch<SingleTodoResponse>(
+  `/api/todos/${route.params.id}`,
+  {
+    key: `todo-${route.params.id}`,
+    immediate: !defaultTodo.value,
+    default: () => ({
+      todo: defaultTodo.value,
+    }),
+    getCachedData: (key) => app.payload.data[key],
+  },
+);
 
 async function handleDeleteTodo() {
   await API.delete(`/api/todos/${route.params.id}`, {

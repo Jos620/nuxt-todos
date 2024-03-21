@@ -1,10 +1,7 @@
 import { CompleteTodoService } from '~/app/services/todo/complete-todo';
 import { DrizzleDatabase } from '~/infra/database/drizzle';
-import { findTodoDTO } from '~/infra/http/dto/todos';
-import {
-  type SingleTodoResponse,
-  TodoViewModel,
-} from '~/infra/http/view-models/todo';
+import { findTodoDTO, type SingleTodoResponse } from '~/infra/http/dto/todos';
+import { TodoViewModel } from '~/infra/http/view-models/todo';
 
 export default defineEventHandler<Promise<SingleTodoResponse>>(
   async (event) => {

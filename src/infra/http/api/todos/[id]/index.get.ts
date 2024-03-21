@@ -1,27 +1,25 @@
 import { GetTodoService } from '~/app/services/todo/get-todo';
 import { DrizzleDatabase } from '~/infra/database/drizzle';
-import { findTodoDTO } from '~/infra/http/dto/todos';
-import { type TodoHTTP, TodoViewModel } from '~/infra/http/view-models/todo';
+import { findTodoDTO, type SingleTodoResponse } from '~/infra/http/dto/todos';
+import { TodoViewModel } from '~/infra/http/view-models/todo';
 
-export interface TodoIdResponse {
-  todo?: TodoHTTP;
-}
+export default defineEventHandler<Promise<SingleTodoResponse>>(
+  async (event) => {
+    const db = DrizzleDatabase.getInstance();
+    const getTodoService = new GetTodoService(db);
 
-export default defineEventHandler<Promise<TodoIdResponse>>(async (event) => {
-  const db = DrizzleDatabase.getInstance();
-  const getTodoService = new GetTodoService(db);
+    const { id } = await getValidatedRouterParams(event, (params) => {
+      return findTodoDTO.parse(params);
+    });
 
-  const { id } = await getValidatedRouterParams(event, (params) => {
-    return findTodoDTO.parse(params);
-  });
+    const todo = await getTodoService.execute(id);
 
-  const todo = await getTodoService.execute(id);
+    if (!todo) {
+      throw new Error('Todo not found');
+    }
 
-  if (!todo) {
-    throw new Error('Todo not found');
-  }
-
-  return {
-    todo: TodoViewModel.toHTTP(todo),
-  };
-});
+    return {
+      todo: TodoViewModel.toHTTP(todo),
+    };
+  },
+);

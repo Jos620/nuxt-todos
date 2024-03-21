@@ -5,7 +5,7 @@ import { Field, useForm } from 'vee-validate';
 import type {
   MultipleTodosResponse,
   SingleTodoResponse,
-} from '@/infra/http/view-models/todo';
+} from '@/infra/http/dto/todos';
 import { createTodoDTO } from '~/infra/http/dto/todos';
 import { API } from '~/ui/lib/api';
 
@@ -25,7 +25,9 @@ const onSubmit = form.handleSubmit(async (values) => {
   if (!todo) return;
 
   app.payload.data[`todo-${todo.id}`] = { todo };
+
   cachedTodos.value?.todos.push(todo);
+  app.payload.data.todos = cachedTodos.value;
 
   router.push(`/todo/${todo.id}`);
 });

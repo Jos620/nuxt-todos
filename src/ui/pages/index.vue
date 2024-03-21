@@ -3,7 +3,7 @@ import type { Todo } from '~/app/entities/todo';
 import type {
   MultipleTodosResponse,
   SingleTodoResponse,
-} from '~/infra/http/view-models/todo';
+} from '~/infra/http/dto/todos';
 import { API } from '~/ui/lib/api';
 
 const app = useNuxtApp();

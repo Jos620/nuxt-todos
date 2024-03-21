@@ -3,12 +3,12 @@ import { http, HttpResponse } from 'msw';
 import { InMemoryDatabase } from '../../../../../tests/database/in-memory-database';
 import { CreateTodoService } from '../../../../app/services/todo/create-todo';
 import { GetAllTodosService } from '../../../../app/services/todo/get-all-todos';
-import { createTodoDTO } from '../../dto/todos';
 import {
+  createTodoDTO,
   type MultipleTodosResponse,
   type SingleTodoResponse,
-  TodoViewModel,
-} from '../../view-models/todo';
+} from '../../dto/todos';
+import { TodoViewModel } from '../../view-models/todo';
 
 const db = new InMemoryDatabase();
 
