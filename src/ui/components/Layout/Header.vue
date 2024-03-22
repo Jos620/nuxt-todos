@@ -18,7 +18,7 @@ const isDark = useDark();
         <NuxtLink to="/todo/create">
           <UiButton flex gap-3>
             New
-            <KBD class="<lg:hidden">/</KBD>
+            <UiKBD class="<lg:hidden">/</UiKBD>
           </UiButton>
         </NuxtLink>
       </div>

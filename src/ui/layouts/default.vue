@@ -16,7 +16,7 @@ onKeyStroke('/', (e) => {
 </script>
 
 <template>
-  <AppHeader />
+  <LayoutHeader />
 
   <main p="4 md:y-10 lg:y-20">
     <div container mx-auto>

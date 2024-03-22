@@ -86,7 +86,7 @@ async function toggleTodo(id: Todo['id']) {
 
               <span class="<lg:hidden">
                 Hit
-                <KBD variant="secondary" size="small">/</KBD>
+                <UiKBD variant="secondary" size="small">/</UiKBD>
                 to create a new todo.
               </span>
             </p>
