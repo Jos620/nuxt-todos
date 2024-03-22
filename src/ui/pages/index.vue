@@ -66,13 +66,14 @@ async function toggleTodo(id: Todo['id']) {
 </script>
 
 <template>
-  <UiTable>
+  <UiTable class="table table-fixed">
     <UiTableHeader>
       <UiTableRow>
         <UiTableHead v-if="data.todos.length > 0" w="50px" />
-        <UiTableHead>Title</UiTableHead>
-        <UiTableHead>Description</UiTableHead>
-        <UiTableHead text-right>Actions</UiTableHead>
+        <UiTableHead class="lg:hidden" w="100%">Todo</UiTableHead>
+        <UiTableHead class="<lg:hidden">Title</UiTableHead>
+        <UiTableHead class="<lg:hidden">Description</UiTableHead>
+        <UiTableHead text-right w="100px">Actions</UiTableHead>
       </UiTableRow>
     </UiTableHeader>
 
@@ -106,15 +107,26 @@ async function toggleTodo(id: Todo['id']) {
             class="px-0 w-full h-full text-left"
             :class="{ 'line-through': todo.isCompleted }"
           >
-            <NuxtLink :to="`/todo/${todo.id}`" block w-full h-full>
-              {{ todo.title }}
+            <NuxtLink :to="`/todo/${todo.id}`" col gap-1 w-full h-full>
+              <p>{{ todo.title }}</p>
+              <p
+                v-if="todo.description"
+                whitespace-pre-line
+                break-words
+                line-clamp-2
+                max-w-full
+                text-muted
+                lg="hidden"
+              >
+                {{ todo.description }}
+              </p>
             </NuxtLink>
           </UiButton>
         </UiTableCell>
-        <UiTableCell>
+        <UiTableCell class="<lg:hidden">
           <NuxtLink :to="`/todo/${todo.id}`" block w-full h-full>
-            <p whitespace-pre line-clamp-2>
-              {{ todo.description?.trim() || '-' }}
+            <p whitespace-pre-line break-words line-clamp-2 max-w-full>
+              {{ todo.description || '-' }}
             </p>
           </NuxtLink>
         </UiTableCell>
