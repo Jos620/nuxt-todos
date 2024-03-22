@@ -7,6 +7,10 @@ const props = defineProps<{
   class?: HTMLAttributes['class'];
 }>();
 const modelValue = defineModel<string>();
+
+defineOptions({
+  name: 'UiTextarea',
+});
 </script>
 
 <template>

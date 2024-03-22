@@ -4,6 +4,10 @@ import { provide } from 'vue';
 
 import { cn } from '@/ui/lib/utils';
 
+defineOptions({
+  name: 'UiFormItem',
+});
+
 export const FORM_ITEM_INJECTION_KEY = Symbol(
   'formItem',
 ) as InjectionKey<string>;

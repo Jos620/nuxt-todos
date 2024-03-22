@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { isFocusingInput } from '../lib/window';
 
+defineOptions({
+  name: 'DefaultLayout',
+});
+
 useDark();
 
 const router = useRouter();

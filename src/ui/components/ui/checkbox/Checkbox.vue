@@ -15,6 +15,10 @@ const props = defineProps<
 >();
 const emits = defineEmits<CheckboxRootEmits>();
 
+defineOptions({
+  name: 'UiCheckbox',
+});
+
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;
 

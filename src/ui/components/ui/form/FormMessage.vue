@@ -4,6 +4,10 @@ import { toValue } from 'vue';
 
 import { useFormField } from './useFormField';
 
+defineOptions({
+  name: 'UiFormMessage',
+});
+
 const { name, formMessageId } = useFormField();
 </script>
 

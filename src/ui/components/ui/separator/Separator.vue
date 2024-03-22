@@ -8,6 +8,10 @@ interface Props extends SeparatorProps {
 }
 
 const props = defineProps<Props>();
+
+defineOptions({
+  name: 'UiSeparator',
+});
 </script>
 
 <template>

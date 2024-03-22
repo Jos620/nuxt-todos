@@ -7,6 +7,10 @@ import type {
 import { singleTodoResponseSchema } from '~/infra/http/dto/todos';
 import { API } from '~/ui/lib/api';
 
+defineOptions({
+  name: 'HomePage',
+});
+
 const app = useNuxtApp();
 
 const { data: cachedTodos } = useNuxtData<MultipleTodosResponse>('todos');

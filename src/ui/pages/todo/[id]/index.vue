@@ -7,6 +7,10 @@ import type {
 } from '@/infra/http/dto/todos';
 import { API } from '@/ui/lib/api';
 
+defineOptions({
+  name: 'TodoPage',
+});
+
 const route = useRoute();
 const router = useRouter();
 const app = useNuxtApp();

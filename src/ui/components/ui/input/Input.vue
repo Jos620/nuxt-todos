@@ -7,6 +7,10 @@ const props = defineProps<{
   class?: HTMLAttributes['class'];
 }>();
 
+defineOptions({
+  name: 'UiInput',
+});
+
 const modelValue = defineModel<string | number>();
 </script>
 

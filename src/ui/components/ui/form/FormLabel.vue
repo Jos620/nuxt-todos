@@ -9,6 +9,10 @@ import { useFormField } from './useFormField';
 
 const props = defineProps<LabelProps & { class?: HTMLAttributes['class'] }>();
 
+defineOptions({
+  name: 'UiFormLabel',
+});
+
 const { error, formItemId } = useFormField();
 </script>
 

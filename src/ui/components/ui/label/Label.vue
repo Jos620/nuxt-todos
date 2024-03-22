@@ -6,6 +6,10 @@ import { cn } from '@/ui/lib/utils';
 
 const props = defineProps<LabelProps & { class?: HTMLAttributes['class'] }>();
 
+defineOptions({
+  name: 'UiLabel',
+});
+
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;
 

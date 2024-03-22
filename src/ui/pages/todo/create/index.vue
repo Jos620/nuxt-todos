@@ -9,6 +9,10 @@ import type {
 import { createTodoDTO } from '~/infra/http/dto/todos';
 import { API } from '~/ui/lib/api';
 
+defineOptions({
+  name: 'CreateTodoPage',
+});
+
 const app = useNuxtApp();
 const router = useRouter();
 

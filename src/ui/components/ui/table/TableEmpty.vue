@@ -16,6 +16,10 @@ const props = withDefaults(
   },
 );
 
+defineOptions({
+  name: 'UiTableEmpty',
+});
+
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;
 

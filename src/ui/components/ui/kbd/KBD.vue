@@ -4,6 +4,10 @@ import { Primitive, type PrimitiveProps } from 'radix-vue';
 
 import { cn } from '~/ui/lib/utils';
 
+defineOptions({
+  name: 'UiKBD',
+});
+
 const kbdVariants = cva('font-mono rounded', {
   variants: {
     variant: {

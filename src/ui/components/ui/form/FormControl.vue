@@ -3,6 +3,10 @@ import { Slot } from 'radix-vue';
 
 import { useFormField } from './useFormField';
 
+defineOptions({
+  name: 'UiFormControl',
+});
+
 const { error, formItemId, formDescriptionId, formMessageId } = useFormField();
 </script>
 

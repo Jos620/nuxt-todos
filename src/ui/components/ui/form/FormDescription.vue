@@ -5,6 +5,10 @@ import { cn } from '@/ui/lib/utils';
 
 import { useFormField } from './useFormField';
 
+defineOptions({
+  name: 'UiFormDescription',
+});
+
 const props = defineProps<{
   class?: HTMLAttributes['class'];
 }>();

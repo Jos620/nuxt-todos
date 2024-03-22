@@ -6,6 +6,10 @@ import { cn } from '@/ui/lib/utils';
 const props = defineProps<{
   class?: HTMLAttributes['class'];
 }>();
+
+defineOptions({
+  name: 'UiTable',
+});
 </script>
 
 <template>

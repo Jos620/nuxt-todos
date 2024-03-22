@@ -1,4 +1,8 @@
 <script setup lang="ts">
+defineOptions({
+  name: 'LayoutHeader',
+});
+
 const isDark = useDark();
 </script>
 
