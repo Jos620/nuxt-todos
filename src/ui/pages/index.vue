@@ -1,72 +1,38 @@
 <script setup lang="ts">
-import type { Todo } from '~/app/entities/todo';
-import type {
-  MultipleTodosResponse,
-  SingleTodoResponse,
-} from '~/infra/http/dto/todos';
-import { singleTodoResponseSchema } from '~/infra/http/dto/todos';
-import { API } from '~/ui/lib/api';
+import type { MultipleTodosResponse } from '~/infra/http/dto/todos';
+
+import type { TodosCache } from '../stores/todos';
 
 defineOptions({
   name: 'HomePage',
 });
 
-const app = useNuxtApp();
+const todosStore = useTodosStore();
+const { cachedTodos } = storeToRefs(todosStore);
 
-const { data: cachedTodos } = useNuxtData<MultipleTodosResponse>('todos');
-const { data } = useFetch<MultipleTodosResponse>('/api/todos', {
-  key: 'todos',
-  getCachedData: (key) => app.payload.data[key],
-  default: () => ({ todos: [] }),
-});
+const todoList = computed(() => Object.values(cachedTodos.value));
 
-async function deleteTodo(id: Todo['id']) {
-  const { data: cachedTodo } = useNuxtData<SingleTodoResponse>(`todo-${id}`);
-
-  await API.delete(`/api/todos/${id}`, {
-    originalData: data,
-    optimisticUpdate() {
-      data.value.todos = data.value.todos.filter((todo) => todo.id !== id);
-    },
-    onResponse() {
-      cachedTodo.value = null;
-      app.payload.data[`todo-${id}`] = cachedTodo.value;
-    },
-  });
-}
-
-async function toggleTodo(id: Todo['id']) {
-  if (!data.value?.todos) return;
-
-  const todo = data.value.todos.find((todo) => todo.id === id);
-  if (!todo) return;
-
-  await API.patch<MultipleTodosResponse>(`/api/todos/${id}`, {
-    body: { isCompleted: !todo.isCompleted },
-    originalData: data,
-    optimisticUpdate() {
-      todo.isCompleted = !todo.isCompleted;
-    },
-    onResponse({ response }) {
-      const { todo: newTodo } = singleTodoResponseSchema.parse(response._data);
-      if (!newTodo) return;
-
-      const { data: cachedTodo } = useNuxtData<SingleTodoResponse>(
-        `todo-${id}`,
-      );
-
-      cachedTodo.value = { todo: newTodo };
-      app.payload.data[`todo-${id}`] = cachedTodo.value;
-
-      cachedTodos.value = {
-        todos: data.value.todos.map((todo) =>
-          todo.id === id ? newTodo : todo,
-        ),
+const { data } = useAsyncData<MultipleTodosResponse>(
+  async () => {
+    if (todoList.value) {
+      return {
+        todos: todoList.value,
       };
-      app.payload.data.todos = cachedTodos.value;
-    },
-  });
-}
+    }
+
+    const response = await $fetch<MultipleTodosResponse>('/api/todos');
+    cachedTodos.value = response.todos.reduce((acc, todo) => {
+      acc[todo.id] = todo;
+      return acc;
+    }, {} as TodosCache);
+
+    return response;
+  },
+  {
+    watch: [todoList],
+    default: () => ({ todos: [] }),
+  },
+);
 </script>
 
 <template>
@@ -102,7 +68,7 @@ async function toggleTodo(id: Todo['id']) {
         <UiTableCell>
           <UiCheckbox
             :checked="todo.isCompleted"
-            @click="toggleTodo(todo.id)"
+            @click="todosStore.toggleTodo(todo.id)"
           />
         </UiTableCell>
         <UiTableCell>
@@ -139,7 +105,7 @@ async function toggleTodo(id: Todo['id']) {
             <UiButton
               variant="destructive"
               size="icon"
-              @click.prevent.stop="deleteTodo(todo.id)"
+              @click.prevent.stop="todosStore.deleteTodo(todo.id)"
             >
               <div i-mdi:delete></div>
             </UiButton>

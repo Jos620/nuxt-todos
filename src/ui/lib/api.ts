@@ -5,7 +5,7 @@ import { asArray } from './array';
 type APIFetchRoute<T> = Parameters<typeof $fetch<T>>[0];
 type APIFetchOptions<T> = Parameters<typeof $fetch<T>>[1] & {
   optimisticUpdate?: () => void;
-  originalData?: Ref<T>;
+  originalData?: Ref<T | null>;
   revalidateKey?: string | string[];
 };
 

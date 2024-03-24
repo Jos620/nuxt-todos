@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
 
-import type {
-  MultipleTodosResponse,
-  SingleTodoResponse,
-} from '@/infra/http/dto/todos';
+import type { SingleTodoResponse } from '@/infra/http/dto/todos';
 import { API } from '@/ui/lib/api';
+import { asArray } from '@/ui/lib/array';
 
 defineOptions({
   name: 'TodoPage',
@@ -13,39 +11,38 @@ defineOptions({
 
 const route = useRoute();
 const router = useRouter();
-const app = useNuxtApp();
 
-const { data: cachedTodos } = useNuxtData<MultipleTodosResponse>('todos');
-const defaultTodo = computed(() =>
-  cachedTodos.value?.todos.find((todo) => todo.id === route.params.id),
-);
+const todosStore = useTodosStore();
+const { cachedTodos } = storeToRefs(todosStore);
 
-const { data } = useLazyFetch<SingleTodoResponse>(
-  `/api/todos/${route.params.id}`,
-  {
-    key: `todo-${route.params.id}`,
-    immediate: !defaultTodo.value,
-    default: () => ({
-      todo: defaultTodo.value,
-    }),
-    getCachedData: (key) => app.payload.data[key],
-  },
-);
+const { data } = useAsyncData<SingleTodoResponse>(async () => {
+  const defaultTodo = cachedTodos.value[asArray(route.params.id)[0]];
+
+  if (defaultTodo) {
+    return {
+      todo: defaultTodo,
+    };
+  }
+
+  const response = await $fetch<SingleTodoResponse>(
+    `/api/todos/${route.params.id}`,
+  );
+
+  if (!response.todo) {
+    await router.push('/');
+    throw showError('Todo not found');
+  }
+
+  cachedTodos.value[response.todo.id] = response.todo;
+
+  return response;
+});
 
 async function handleDeleteTodo() {
-  await API.delete(`/api/todos/${route.params.id}`, {
-    revalidateKey: 'todos',
-    optimisticUpdate() {
-      if (!cachedTodos.value) return;
+  if (!data.value?.todo) return;
 
-      cachedTodos.value.todos = cachedTodos.value.todos.filter(
-        (todo) => todo.id !== route.params.id,
-      );
-    },
-    async onResponse() {
-      await router.push('/');
-    },
-  });
+  router.push('/');
+  await todosStore.deleteTodo(data.value.todo.id);
 }
 
 async function handleTodoToggle() {
@@ -55,15 +52,14 @@ async function handleTodoToggle() {
       revalidateKey: ['todos'],
       originalData: data,
       optimisticUpdate() {
-        if (!data.value.todo) return;
+        if (!data.value?.todo) return;
         data.value.todo.isCompleted = !data.value.todo.isCompleted;
       },
     },
   );
   if (!todo) return;
 
-  app.payload.data[`todo-${route.params.id}`] = { todo };
-  data.value.todo = todo;
+  cachedTodos.value[todo.id] = todo;
 }
 </script>
 
@@ -74,14 +70,17 @@ async function handleTodoToggle() {
         <div i-mdi:chevron-left text="2xl muted hover:primary" />
       </NuxtLink>
 
-      <UiCheckbox :checked="data.todo?.isCompleted" @click="handleTodoToggle" />
+      <UiCheckbox
+        :checked="data?.todo?.isCompleted"
+        @click="handleTodoToggle"
+      />
 
       <h2
         pb-0
         ml-2
-        :class="{ 'line-through text-3xl text-muted': data.todo?.isCompleted }"
+        :class="{ 'line-through text-3xl text-muted': data?.todo?.isCompleted }"
       >
-        {{ data.todo?.title }}
+        {{ data?.todo?.title }}
       </h2>
     </div>
 

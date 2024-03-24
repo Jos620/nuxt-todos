@@ -2,10 +2,7 @@
 import { toTypedSchema } from '@vee-validate/zod';
 import { Field, useForm } from 'vee-validate';
 
-import type {
-  MultipleTodosResponse,
-  SingleTodoResponse,
-} from '@/infra/http/dto/todos';
+import type { SingleTodoResponse } from '@/infra/http/dto/todos';
 import { createTodoDTO } from '~/infra/http/dto/todos';
 import { API } from '~/ui/lib/api';
 
@@ -13,10 +10,10 @@ defineOptions({
   name: 'CreateTodoPage',
 });
 
-const app = useNuxtApp();
 const router = useRouter();
 
-const { data: cachedTodos } = useNuxtData<MultipleTodosResponse>('todos');
+const todosStore = useTodosStore();
+const { cachedTodos } = storeToRefs(todosStore);
 
 const form = useForm({
   validationSchema: toTypedSchema(createTodoDTO),
@@ -28,11 +25,7 @@ const onSubmit = form.handleSubmit(async (values) => {
   });
   if (!todo) return;
 
-  app.payload.data[`todo-${todo.id}`] = { todo };
-
-  cachedTodos.value?.todos.push(todo);
-  app.payload.data.todos = cachedTodos.value;
-
+  cachedTodos.value[todo.id] = todo;
   router.push(`/todo/${todo.id}`);
 });
 
