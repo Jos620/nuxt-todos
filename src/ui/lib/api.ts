@@ -1,6 +1,6 @@
 import { toRaw } from 'vue';
 
-import { asArray } from './array';
+import { asArray } from './utils';
 
 type APIFetchRoute<T> = Parameters<typeof $fetch<T>>[0];
 type APIFetchOptions<T> = Parameters<typeof $fetch<T>>[1] & {

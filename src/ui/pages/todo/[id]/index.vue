@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import type { SingleTodoResponse } from '@/infra/http/dto/todos';
 import { API } from '@/ui/lib/api';
-import { asArray } from '@/ui/lib/array';
+import { asArray } from '@/ui/lib/utils';
 
 defineOptions({
   name: 'TodoPage',
