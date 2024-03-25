@@ -1,22 +1,10 @@
 <script setup lang="ts">
-import { DOM } from '../lib/dom';
-
 defineOptions({
   name: 'DefaultLayout',
 });
 
 useDark();
-
-const router = useRouter();
-
-onKeyStroke('/', (e) => {
-  if (DOM.isFocusingInput()) {
-    return;
-  }
-
-  e.preventDefault();
-  router.push('/todo/create');
-});
+useKeyboardShortcuts();
 </script>
 
 <template>
