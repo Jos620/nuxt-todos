@@ -28,25 +28,22 @@ export const useTodosStore = defineStore('todos', () => {
     const todo = cachedTodos.value[id];
     if (!todo) return;
 
-    return await API.patch<TodosCache | undefined, SingleTodoResponse>(
-      `/api/todos/${id}`,
-      {
-        body: { isCompleted: !todo.isCompleted },
-        originalData: cachedTodos,
-        optimisticUpdate() {
-          todo.isCompleted = !todo.isCompleted;
-        },
-        onResponse({ response }) {
-          if (!cachedTodos.value) return;
-          const { todo: newTodo } = singleTodoResponseSchema.parse(
-            response._data,
-          );
-          if (!newTodo) return;
-
-          cachedTodos.value[newTodo.id] = newTodo;
-        },
+    return await API.patch<SingleTodoResponse>(`/api/todos/${id}`, {
+      body: { isCompleted: !todo.isCompleted },
+      originalData: cachedTodos,
+      optimisticUpdate() {
+        todo.isCompleted = !todo.isCompleted;
       },
-    );
+      onResponse({ response }) {
+        if (!cachedTodos.value) return;
+        const { todo: newTodo } = singleTodoResponseSchema.parse(
+          response._data,
+        );
+        if (!newTodo) return;
+
+        cachedTodos.value[newTodo.id] = newTodo;
+      },
+    });
   }
 
   return {

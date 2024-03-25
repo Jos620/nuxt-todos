@@ -5,16 +5,16 @@ import { asArray } from './utils';
 type APIFetchRoute<T> = Parameters<typeof $fetch<T>>[0];
 type APIFetchOptions<T> = Parameters<typeof $fetch<T>>[1] & {
   optimisticUpdate?: () => void;
-  originalData?: Ref<T | null>;
+  originalData?: Ref<any>;
   revalidateKey?: string | string[];
 };
 
 export class API {
-  static async fetch<T, R = T>(
+  static async fetch<T>(
     route: APIFetchRoute<T>,
     options: APIFetchOptions<T>,
-  ): Promise<R> {
-    let backup: T | undefined;
+  ): Promise<T> {
+    let backup: any;
 
     const { optimisticUpdate, originalData, revalidateKey, ...fetchOptions } =
       options;
