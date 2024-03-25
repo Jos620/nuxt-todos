@@ -13,4 +13,9 @@ export class DOM {
       activeElement.tagName.toLowerCase() || '',
     );
   }
+
+  static autoResizeTextarea(textarea: HTMLTextAreaElement) {
+    textarea.style.height = 'auto';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  }
 }

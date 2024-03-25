@@ -4,6 +4,7 @@ import { Field, useForm } from 'vee-validate';
 
 import type { SingleTodoResponse } from '@/infra/http/dto/todos';
 import { createTodoDTO } from '~/infra/http/dto/todos';
+import { vResizeTextarea } from '~/ui/directives/resize-textarea';
 import { API } from '~/ui/lib/api';
 
 defineOptions({
@@ -57,7 +58,11 @@ onMounted(() => {
       <UiFormItem>
         <UiFormLabel>Description</UiFormLabel>
         <UiFormControl>
-          <UiTextarea placeholder="Add a description" v-bind="componentField" />
+          <UiTextarea
+            v-resize-textarea
+            placeholder="Add a description"
+            v-bind="componentField"
+          />
         </UiFormControl>
         <UiFormMessage />
       </UiFormItem>
