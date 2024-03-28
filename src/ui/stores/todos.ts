@@ -9,13 +9,13 @@ import { API } from '../lib/api';
 export type TodosCache = Record<TodoHTTP['id'], TodoHTTP>;
 
 export const useTodosStore = defineStore('todos', () => {
-  const cachedTodos = ref<TodosCache>({});
+  const cachedTodos = ref<TodosCache>();
 
   async function deleteTodo(id: TodoHTTP['id']) {
     await API.delete(`/api/todos/${id}`, {
       originalData: cachedTodos,
       optimisticUpdate() {
-        delete cachedTodos.value[id];
+        delete cachedTodos.value?.[id];
       },
     });
 

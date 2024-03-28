@@ -10,7 +10,13 @@ defineOptions({
 const todosStore = useTodosStore();
 const { cachedTodos } = storeToRefs(todosStore);
 
-const todoList = computed(() => Object.values(cachedTodos.value));
+const todoList = computed(() => {
+  if (!cachedTodos.value) {
+    return null;
+  }
+
+  return Object.values(cachedTodos.value);
+});
 
 const { data } = useAsyncData<MultipleTodosResponse>(
   async () => {
