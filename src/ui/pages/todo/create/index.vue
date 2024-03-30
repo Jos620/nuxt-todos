@@ -30,11 +30,18 @@ const onSubmit = form.handleSubmit(async (values) => {
   router.push(`/todo/${todo.id}`);
 });
 
-onMounted(() => {
+function focusTitleInput() {
   const titleInput = document.querySelector<HTMLInputElement>(
     'input[name="title"]',
   );
   titleInput?.focus();
+}
+
+onMounted(focusTitleInput);
+onStartTyping(() => {
+  if (!form.values.title) {
+    focusTitleInput();
+  }
 });
 </script>
 
