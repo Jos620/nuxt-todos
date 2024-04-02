@@ -9,10 +9,13 @@ export class UpdateTodoService {
     const todo = await this.db.getTodoById(id);
     if (!todo) throw TodoError.notFound();
 
-    const newTodo = new Todo({
-      ...todo.props,
-      ...overrides,
-    });
+    const newTodo = new Todo(
+      {
+        ...todo.props,
+        ...overrides,
+      },
+      id,
+    );
 
     await this.db.updateTodo(newTodo);
 
