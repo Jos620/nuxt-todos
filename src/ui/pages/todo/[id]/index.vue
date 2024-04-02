@@ -12,11 +12,14 @@ defineOptions({
 const route = useRoute();
 const router = useRouter();
 
+const routeId = computed(() => asArray(route.params.id)[0]);
+
 const todosStore = useTodosStore();
-const { cachedTodos } = storeToRefs(todosStore);
+const { cachedTodos, singleCachedTodo } = storeToRefs(todosStore);
 
 const { data } = useAsyncData<SingleTodoResponse>(async () => {
-  const defaultTodo = cachedTodos.value[asArray(route.params.id)[0]];
+  const defaultTodo =
+    cachedTodos.value?.[routeId.value] || singleCachedTodo.value;
 
   if (defaultTodo) {
     return {
@@ -33,7 +36,7 @@ const { data } = useAsyncData<SingleTodoResponse>(async () => {
     throw showError('Todo not found');
   }
 
-  cachedTodos.value[response.todo.id] = response.todo;
+  singleCachedTodo.value = response.todo;
 
   return response;
 });
@@ -59,7 +62,9 @@ async function handleTodoToggle() {
   );
   if (!todo) return;
 
-  cachedTodos.value[todo.id] = todo;
+  if (cachedTodos.value) {
+    cachedTodos.value[todo.id] = todo;
+  }
 }
 </script>
 

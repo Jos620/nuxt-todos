@@ -36,12 +36,11 @@ export const useTodosStore = defineStore('todos', () => {
       },
       onResponse({ response }) {
         if (!cachedTodos.value) return;
-        const { todo: newTodo } = singleTodoResponseSchema.parse(
-          response._data,
-        );
-        if (!newTodo) return;
 
-        cachedTodos.value[newTodo.id] = newTodo;
+        const { todo } = singleTodoResponseSchema.parse(response._data);
+        if (!todo) return;
+
+        cachedTodos.value[todo.id] = todo;
       },
     });
   }
