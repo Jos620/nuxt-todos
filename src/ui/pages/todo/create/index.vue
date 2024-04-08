@@ -14,7 +14,7 @@ defineOptions({
 const router = useRouter();
 
 const todosStore = useTodosStore();
-const { cachedTodos } = storeToRefs(todosStore);
+const { singleCachedTodo } = storeToRefs(todosStore);
 
 const form = useForm({
   validationSchema: toTypedSchema(createTodoDTO),
@@ -26,7 +26,7 @@ const onSubmit = form.handleSubmit(async (values) => {
   });
   if (!todo) return;
 
-  cachedTodos.value[todo.id] = todo;
+  singleCachedTodo.value = todo;
   router.push(`/todo/${todo.id}`);
 });
 

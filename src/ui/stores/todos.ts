@@ -11,6 +11,9 @@ export type TodosCache = Record<TodoHTTP['id'], TodoHTTP>;
 export const useTodosStore = defineStore('todos', () => {
   const cachedTodos = ref<TodosCache>();
 
+  const singleCachedTodo = ref<TodoHTTP>();
+  whenever(cachedTodos, () => (singleCachedTodo.value = undefined));
+
   async function deleteTodo(id: TodoHTTP['id']) {
     await API.delete(`/api/todos/${id}`, {
       originalData: cachedTodos,
@@ -47,6 +50,7 @@ export const useTodosStore = defineStore('todos', () => {
 
   return {
     cachedTodos,
+    singleCachedTodo,
     deleteTodo,
     toggleTodo,
   };
