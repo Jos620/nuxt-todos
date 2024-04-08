@@ -20,4 +20,8 @@ export default defineNuxtConfig({
     '~': resolvePath('src'),
     '@': resolvePath('src'),
   },
+  runtimeConfig: {
+    databaseUrl: process.env.NUXT_DATABASE_URL,
+    databaseAuthToken: process.env.NUXT_DATABASE_AUTH_TOKEN,
+  },
 });

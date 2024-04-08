@@ -23,8 +23,8 @@ export class DrizzleDatabase implements TodosRepository {
   private readonly db: LibSQLDatabase;
 
   private constructor() {
-    const databaseUrl = process.env.DATABASE_URL;
-    const databaseAuthToken = process.env.DATABASE_AUTH_TOKEN;
+    const { databaseUrl, databaseAuthToken } = useRuntimeConfig();
+
     if (!databaseUrl || !databaseAuthToken) {
       throw new Error('Database URL and Auth Token must be provided');
     }
