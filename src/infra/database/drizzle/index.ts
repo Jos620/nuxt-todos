@@ -26,7 +26,7 @@ export class DrizzleDatabase implements TodosRepository {
     const { databaseUrl, databaseAuthToken } = useRuntimeConfig();
 
     if (!databaseUrl || !databaseAuthToken) {
-      throw new Error('Database URL and Auth Token must be provided');
+      throw new Error('Database URL and auth token must be provided');
     }
 
     const client = createClient({
