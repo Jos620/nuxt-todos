@@ -10,7 +10,7 @@ defineOptions({
 const todosStore = useTodosStore();
 const { cachedTodos } = storeToRefs(todosStore);
 
-const { data } = useAsyncData<MultipleTodosResponse>(
+const { data, refresh } = useAsyncData<MultipleTodosResponse>(
   async () => {
     if (cachedTodos.value) {
       return {
@@ -27,10 +27,10 @@ const { data } = useAsyncData<MultipleTodosResponse>(
     return response;
   },
   {
-    watch: [cachedTodos],
     default: () => ({ todos: [] }),
   },
 );
+watch(cachedTodos, refresh, { deep: true });
 </script>
 
 <template>
