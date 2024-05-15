@@ -1,5 +1,15 @@
 <script setup lang="ts">
 import { SpeedInsights } from '@vercel/speed-insights/nuxt';
+
+import { type Theme, THEME_KEY } from './lib/theme';
+
+const isDarkCookie = useCookie<Theme>(THEME_KEY);
+
+useDark({
+  onChanged: (value) => {
+    isDarkCookie.value = value ? 'dark' : 'light';
+  },
+});
 </script>
 
 <template>
