@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { todoViewModelSchema } from '../view-models/todo';
+import { todoHTTPSchema } from '../view-models/todo';
 
 export const createTodoDTO = z.object({
   title: z.string({ required_error: 'Title is required!' }).max(255),
@@ -15,11 +15,11 @@ export const findTodoDTO = z.object({
 });
 
 export const singleTodoResponseSchema = z.object({
-  todo: todoViewModelSchema.optional(),
+  todo: todoHTTPSchema.optional(),
 });
 
 export const multipleTodosResponseSchema = z.object({
-  todos: z.array(todoViewModelSchema),
+  todos: z.array(todoHTTPSchema),
 });
 
 export type SingleTodoResponse = z.infer<typeof singleTodoResponseSchema>;
