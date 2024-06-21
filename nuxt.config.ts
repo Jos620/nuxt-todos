@@ -24,4 +24,5 @@ export default defineNuxtConfig({
     databaseUrl: process.env.NUXT_DATABASE_URL,
     databaseAuthToken: process.env.NUXT_DATABASE_AUTH_TOKEN,
   },
+  ignore: [process.env.NODE_ENV === 'production' ? '**/@*/*' : ''],
 });
