@@ -25,4 +25,11 @@ export default defineNuxtConfig({
     databaseAuthToken: process.env.NUXT_DATABASE_AUTH_TOKEN,
   },
   ignore: [process.env.NODE_ENV === 'production' ? '**/@*/*' : ''],
+  vite: {
+    vue: {
+      script: {
+        propsDestructure: true,
+      },
+    },
+  },
 });
