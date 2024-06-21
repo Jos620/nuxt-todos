@@ -26,6 +26,7 @@
     "format": "run-s format:*",
     "test": "run-s test:*",
     "dev": "run-s dev:pre dev:app",
+    "dev:host": "run-s dev:pre 'dev:app --host'",
     "build": "run-s build:pre build:app",
     "preview": "BUILD_TYPE=preview run-s build && nuxt preview"
   },
@@ -33,6 +34,7 @@
     "@commitlint/cli": "^18.4.4",
     "@commitlint/config-conventional": "^18.4.4",
     "@iconify-json/mdi": "^1.1.64",
+    "@nuxt/kit": "^3.11.2",
     "@nuxt/test-utils": "^3.9.0",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@playwright/test": "^1.40.1",
